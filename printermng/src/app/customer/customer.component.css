@@ -1,0 +1,287 @@
+@import "primeicons/primeicons.css";
+.main{
+    margin: 0% auto;
+}
+h1{
+    text-align: center;
+}
+.serachCustomer{
+    text-align: center;
+}
+
+
+
+/* 输入框 */
+.input-container {
+    position: relative;
+    margin-bottom: 1rem;
+    margin: 20px;
+  }
+
+
+  
+  .input-label {
+    transform: translateY(-50%);
+    color: black;
+    transition: all 0.3s ease-in-out;
+  }
+
+
+  .input-field {
+    padding: 4px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .input-field:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+  
+  .input-field:focus + .input-label,
+  .input-field:not(:placeholder-shown) + .input-label {
+    top: 0;
+    transform: translateY(-50%) scale(0.75);
+    color: #007bff;
+  }
+
+
+
+
+.button{
+    margin: 20px;
+    text-align: center;
+    padding: 20px;
+}
+
+
+
+
+  .Adddialog input{
+    margin: 5px;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    font-family: 幼圆;
+}
+
+.button1{
+    margin-top: -180px;
+    margin-left: 1100px;
+
+}
+
+.button2{
+    position: absolute;
+    top: 130px;
+    left: 980px;
+}
+.button3{
+    position: absolute;
+    top: 55px;
+    left: 980px;
+    margin-left: 120px;
+}
+
+.invalid-feedback {
+    margin-top: 0;  /* 将顶部边距设置为0 */
+    margin-bottom: 0;  /* 将底部边距设置为0 */
+    display: inline-block;  /* 将元素设置为行内块级元素 */
+  }
+
+
+.invalid-feedback1 {
+    margin-top: 0;  /* 将顶部边距设置为0 */
+    margin-bottom: 0;  /* 将底部边距设置为0 */
+    
+  }
+
+
+
+body {
+    font-family: "微软雅黑";
+    overflow-x: auto;
+    overflow-y: auto;
+    zoom: 0.72;
+}
+
+
+#leftZone {
+
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 125px;
+    vertical-align: top;
+    position: fixed;
+
+    
+    
+}
+
+
+#p-left1 {
+    margin-top: 15px;
+    margin-left: 15px;
+    margin-bottom: 80px;
+}
+
+
+#rightZone {
+    float: left;
+    padding: 20px;
+
+    top: 0;
+    left: 125px;
+    bottom: 0;
+    height: 50px;
+    width: 100%;
+    position: absolute;
+    background-color: rgb(60, 141, 188);
+
+
+}
+
+#centerZone1 {
+    top: 0px;
+    left: 200px;
+    position: absolute;
+
+    background-size: cover;
+    background-position:center ;
+    width: 100%;
+    height: 300px;
+    
+}
+#center {
+    top: 50px;
+    left: 0px;
+    position: absolute;
+    zoom: 1.2;
+}
+
+
+#centerZone1 p {
+    margin-top: 35px;
+
+}
+
+/* #roof {
+    width: 100%;
+    height: 50px;
+    overflow: hidden;
+    font-family: "宋体";
+    overflow: hidden;
+    font-size: 13px;
+
+} */
+a:hover {
+    color: brown;
+}
+
+#b {
+    border-radius: 12px;
+    border: 2px solid #c5d5cb;
+    background-color: #e3e0cf;
+    width: 100px;
+    height: 50px;
+    -webkit-transition-duration: 0.4s;
+    /* Safari */
+    transition-duration: 0.4s;
+}
+
+
+
+
+
+
+#topZone {
+    position: fixed;
+    top: 0;
+    left:100px;
+
+    z-index: 99;
+    display: block; /* 或者其他合适的显示属性值 */
+
+      width: 100%;
+
+    
+  }
+
+  
+  #myDialog {
+    z-index: 1000; /* 设置一个比 topZone 更高的 z-index 值 */
+  }
+
+
+  /* menu */
+  /* .custom-menu{
+    top: 0;
+    left: 0;
+    bottom: 0;
+    height: 100%;
+    vertical-align: top;
+    color: #fff;
+    position: fixed;
+    background-color: #9fa8a3
+  } */
+
+
+  #centerZone4 {
+    top: 300Px;
+    left: 300px;
+    position: absolute;
+
+
+    
+}
+  #centerZone4 {
+    height: calc(100vh - 50px); /* 设置高度为视口高度减去页面上方元素的高度 */
+    overflow-y: hidden;
+  }
+
+  .table-header {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    z-index: 1;
+  }
+
+
+  .table-wrapper {
+
+    height: 650px; /* 设置表格高度 */
+    overflow: hidden; /* 开启滚动条 */
+
+  }
+  
+  .table-header {
+    position: sticky; /* 设置表头固定 */
+    top: 0; /* 将表头置顶 */
+    z-index: 1; /* 设置表头在最上层 */
+    background-color: #f5f5f5; /* 设置表头背景颜色 */
+  }
+  
+  .table-body {
+    height: calc(100% - 40px); /* 设置表格内容高度，减去表头的高度 */
+    overflow: auto; /* 开启滚动条 */
+  }
+
+
+
+p-table td{
+  padding: 5px;
+  text-align: center;
+
+}
+
+
+/* p-table {
+  width: 75%;
+  height: 75%;
+} */

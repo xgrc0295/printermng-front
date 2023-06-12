@@ -1,0 +1,15 @@
+.group1{
+    float: left;
+}
+.group2{
+    float: left;
+    margin-left: 20px;
+}
+.addbutton{
+    width: 80px;
+    height: 140px;
+    margin-top: 90px;
+    margin-left: 1100px;
+    margin-bottom: 90px;
+    text-align: center;
+}

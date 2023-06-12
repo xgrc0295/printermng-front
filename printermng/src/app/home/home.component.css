@@ -1,0 +1,37 @@
+.nav{
+    float: left;
+    height: 100vh;
+    position: fixed;
+}
+
+.body{
+    background-color: #ECEFF9;
+    height: 100vh;
+    z-index: 0;
+}
+.context{
+    margin-left: 20%;
+    margin-right: 5%;
+    position: relative;
+}
+div .card1{
+    position: relative;
+}
+.button{
+    margin-left: 40%;
+}
+.test{
+    margin-left: 85%;
+}
+label{
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.box{
+    display: flex;
+	justify-content: space-between;
+}
+.card{
+    width: 49%;
+}

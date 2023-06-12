@@ -1,0 +1,46 @@
+<div class="body">
+  <div class="context">
+    <div>
+      <br />
+      <div class="box">
+        <p-card class="card" header="采购">
+          <p-chart
+            type="pie"
+            [data]="data1"
+            [options]="options"
+            height="20vh"
+          ></p-chart>
+        </p-card>
+        <br />
+        <p-card class="card" header="销售">
+          <p-chart
+            type="bar"
+            [data]="data2"
+            [options]="options"
+            height="20vh"
+          ></p-chart>
+        </p-card>
+      </div>
+      <br />
+      <div class="box">
+        <p-card class="card" header="库存">
+          <p-chart
+            type="bar"
+            [data]="basicData"
+            [options]="basicOptions"
+            height="20vh"
+          ></p-chart>
+        </p-card>
+        <br />
+        <p-card class="card" header="客户">
+          <p-chart
+            type="line"
+            [data]="data4"
+            [options]="basicOptions"
+            height="20vh"
+          ></p-chart>
+        </p-card>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,73 @@
+<div class="content">
+<div class="b1" class="top">
+  <h1>故障查询</h1>
+  <form [formGroup]="selectFaultFormGroup">
+  故障名称：
+  <input type="text"  formControlName="faultName"/>
+  故障描述：
+  <input type="text"  formControlName="faultDescrip"/><br><br>
+  维修员工：
+  <input type="text"  formControlName="empName"/>
+  客户姓名：
+  <input type="text"  formControlName="customerName"/>
+  <div class="b1">
+    <p-button label="搜索"
+    styleClass="p-button-rounded p-button-help"
+    (onClick)="selectFault()"
+   ></p-button>
+  </div>
+
+</form>
+
+
+</div><br>
+
+
+<!-- 故障表格 -->
+<div class="showFault">
+    <p-table
+      [value]="selectFaultResult"
+      [tableStyle]="{ 'min-width': '50rem' }"
+
+    >
+      <ng-template pTemplate="header">
+        <tr class="mid">
+          <th >维修编号：</th>
+          <th>故障名称：</th>
+          <th  style="width: 30%;" >故障描述：</th>
+          <th  style="width: 40%;">解决方法：</th>
+          <th>维修员工：</th>
+          <th>客户姓名：</th>
+          
+          <!-- <th colspan="2">操作</th> -->
+        </tr>
+      </ng-template>
+  
+      <ng-template pTemplate="body" let-fault>
+        <tr  class="bottom">
+          <td >{{ fault.faultId }}</td>
+          <td>{{fault.faultName}}</td>
+          <td>
+            {{ fault.faultDescrip }}
+          </td>
+          <td>{{ fault.faultSolve }}</td>
+          <td>{{ fault.empName }}</td>
+          <td>{{ fault.customerName }}</td>
+          
+          <!-- <td>
+            <p-button
+              label="删除"
+              styleClass="p-button-outlined p-button-danger"
+            ></p-button>
+          </td>
+          <td>
+            <p-button
+              label="修改"
+              styleClass="p-button-outlined p-button-warning"
+            ></p-button>
+          </td> -->
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

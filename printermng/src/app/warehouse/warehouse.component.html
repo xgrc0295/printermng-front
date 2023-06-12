@@ -1,0 +1,150 @@
+<div class="card-container">
+  <p-card>
+    <div class="card-header">出入库信息记录</div>
+    <div class="card-body">
+      <div class="scrollable-content">
+        <form>
+          <table [cellPadding]="5" [cellSpacing]="15" style="margin: auto">
+            <tr>
+              <td>
+                <label htmlFor="printerName">产品名称：</label>
+                <input pInputText id="printerName" />
+              </td>
+              <td>
+                <label htmlFor="empName">员工名称：</label>
+                <input pInputText id="empName" formControlName="empName" />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label htmlFor="warehouseOutDate">出库时间：</label>
+                <input pInputText id="customerName" />
+              </td>
+              <td>
+                <label htmlFor="warehouseInDate">入库时间：</label>
+                <input pInputText />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p-button
+                  style="padding-left: 150px"
+                  label="清空"
+                  styleClass="p-button-outlined p-button-danger"
+                ></p-button>
+              </td>
+              <td>
+                <p-button style="padding-left: 50px">检索</p-button>
+              </td>
+            </tr>
+          </table>
+        </form>
+        <div class="warehouse-table">
+          <p-table
+            [value]="warehouseResult"
+            [tableStyle]="{ 'min-width': '50rem' }"
+            [paginator]="true"
+            [rowsPerPageOptions]="[5, 10, 15]"
+            [first]="first"
+            [rows]="rows"
+            (onPageChange)="onPageChange($event)"
+          >
+            <ng-template pTemplate="caption"> 库存记录 </ng-template>
+            <ng-template pTemplate="header">
+              <tr>
+                <th pSortableColumn="warehouseId">
+                  库存编号<p-sortIcon field="warehouseId "></p-sortIcon>
+                </th>
+                <th>商品名字</th>
+                <th pSortableColumn="inventory">
+                  操作<p-sortIcon field="inventory"></p-sortIcon>
+                </th>
+                <th>出入库日期</th>
+                <th>操作人</th>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-warehouse>
+              <tr>
+                <td>{{ warehouse.warehouseId }}</td>
+                <td>{{ warehouse.printerName }}</td>
+                <td *ngIf="warehouse.inventory > 0">
+                  入库 {{ warehouse.inventory }}
+                </td>
+                <td *ngIf="warehouse.inventory < 0">
+                  出库 {{ -warehouse.inventory }}
+                </td>
+                <td *ngIf="warehouse.warehouseInDate">
+                  {{ warehouse.warehouseInDate }}
+                </td>
+                <td *ngIf="warehouse.warehouseOutDate">
+                  {{ warehouse.warehouseOutDate }}
+                </td>
+                <td>{{ warehouse.empName }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+  </p-card>
+</div>
+
+<div class="card-container">
+  <p-card>
+    <div class="card-header">产品库存情况</div>
+    <div class="card-body">
+      <div class="scrollable-content">
+        <div class="inventory-table">
+          <form>
+            <table [cellPadding]="5" [cellSpacing]="15" style="margin: auto">
+              <tr>
+                <td></td>
+                <td>
+                  <label htmlFor="printerName">产品名称：</label>
+                  <input
+                    pInputText
+                    name="printerName"
+                    [(ngModel)]="printerName"
+                  />
+                </td>
+                <td>
+                  <p-button
+                    style="padding-left: 50px"
+                    (onClick)="getInventoryByName()"
+                    >检索</p-button
+                  >
+                </td>
+              </tr>
+            </table>
+          </form>
+          <p-table
+            [value]="inventoryResult"
+            [tableStyle]="{ 'min-width': '50rem' }"
+            [paginator]="true"
+            [rowsPerPageOptions]="[5, 10, 15]"
+            [first]="first"
+            [rows]="rows"
+            (onPageChange)="onPageChange($event)"
+          >
+            <ng-template pTemplate="header">
+              <tr>
+                <th>商品名字</th>
+                <th pSortableColumn="inventory">
+                  库存数量<p-sortIcon field="inventory"></p-sortIcon>
+                </th>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-inventory>
+              <tr>
+                <td>{{ inventory.printerName }}</td>
+                <td>{{ inventory.inventory }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+  </p-card>
+</div>

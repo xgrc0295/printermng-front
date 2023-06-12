@@ -1,0 +1,844 @@
+
+<div class="all">
+
+    <div class="topic">
+        <button class="b" (click)="showWarehousings()"><em class="logo1"></em> 入库</button>
+        <p></p>
+        <button class="b" (click)="showPrinters()"><em class="logo2"></em>打印机</button>
+        <p></p>
+        <button class="b" (click)="showCircums()"><em class="logo3"></em> 周边</button>
+        <p></p>
+        <button class="b" (click)="showExpands()"><em class="logo4"></em>消耗品</button>
+        <p></p>
+    </div>
+    
+    <div class="line">
+
+    </div>
+    <div class="rk" *ngIf="Warehousing">
+        <div class="text-animation">
+            <h1>
+                <span>入</span>
+                <span>库</span>
+                <span>定</span>
+                <span>单</span>
+                <span>展</span>
+                <span>示</span>
+                <span>表</span>
+                <span>格</span>
+            </h1>
+        </div>
+        <div class="under"> 
+            <div class="btnSet">
+                <form [formGroup]="searchWarehousingFormGroup">
+                    <label class="label" htmlFor="expandName">商品名字</label>
+                    <input 
+                    pInputText
+                    id="expandName"
+                    formControlName="expandName"
+                    placeholder="请输入商品名字:  "
+                    style="color:blueviolet;
+                           font-size: 10px;
+                           border: none;
+                           border-radius: 10px;
+                           height: 15px;
+                           width:365px;
+                           " />
+
+                    <label class="label" htmlFor="type" style="margin-left: 55px;">类型</label>
+                    <input 
+                    pInputText
+                    id="type"
+                    formControlName="type"
+                    placeholder="(打印机/周边/消耗品)"
+                    style="color:blueviolet;
+                           font-size: 10px;
+                           border: none;
+                           border-radius: 10px;
+                           height: 15px;
+                           width:150px;
+                           
+                           " />
+
+                    
+
+                    <button 
+                    class="btn1 btn-1"
+                    (click)="searchWarehousing()"
+                    style="margin-left: 235px;"
+                    >
+                    <a href="#">检索</a>
+                    </button>
+                    <br/>
+
+                    <label class="label" htmlFor="channelWay">采购方式</label>
+                    <input 
+                    pInputText
+                    id="channelWay"
+                    formControlName="channelWay"
+                    placeholder="(线上/线下)"
+                    style="color:blueviolet;
+                           font-size: 10px;
+                           border: none;
+                           border-radius: 10px;
+                           height: 15px;
+                           "  />
+
+                    <label class="label" htmlFor="channelQuantity">数量</label>
+                    <input 
+                    pInputText
+                    id="channelQuantity"
+                    formControlName="channelQuantity"
+                    placeholder="0" 
+                    style="color:blueviolet;
+                           font-size: 10px;
+                           border: none;
+                           border-radius: 10px;
+                           height: 15px;
+                           " />
+
+                    <label class="label" htmlFor="price" style="margin-left: 55px;">价格</label>
+                    <input 
+                    pInputText
+                    id="price"
+                    formControlName="price"
+                    placeholder="0" 
+                    style="color:blueviolet;
+                           font-size: 10px;
+                           border: none;
+                           border-radius: 10px;
+                           height: 15px;
+                           width: 60px;
+                           " />
+
+                    <span style="color:#fff;font-size: 20px;">~</span>
+                    <input 
+                    pInputText
+                    id="price1"
+                    formControlName="price1"
+                    placeholder="0" 
+                    style="color:blueviolet;
+                           font-size: 10px;
+                           border: none;
+                           border-radius: 10px;
+                           height: 15px;
+                           width: 60px;
+                           " />
+
+                    <button type="reset" class="btn1 btn-1" style="color:azure;margin-left: 255px;">清空</button>
+                    
+                    <br/>
+
+                    <label class="label" htmlFor="responsiblePerson">负责人&emsp;</label>
+                    <input 
+                    pInputText
+                    id="responsiblePerson"
+                    formControlName="responsiblePerson"
+                    placeholder="请输入负责人："
+                    style="color:blueviolet;
+                           font-size: 10px;
+                           border: none;
+                           border-radius: 10px;
+                           height: 15px;
+                           "  />
+
+                    <label class="label" htmlFor="buyer">采购</label>
+                    <input 
+                    pInputText
+                    id="buyer"
+                    formControlName="buyer"
+                    placeholder="请输入采购员："
+                    style="color:blueviolet;
+                           font-size: 10px;
+                           border: none;
+                           border-radius: 10px;
+                           height: 15px;
+                           "  /> 
+                    <label class="label" htmlFor="channel" style="margin-left: 55px;">渠道</label>
+                    <input 
+                    pInputText
+                    id="channel"
+                    formControlName="channel"
+                    placeholder="请输入采购渠道：" 
+                    style="color:blueviolet;
+                    font-size: 10px;
+                    border: none;
+                    border-radius: 10px;
+                    height: 15px;
+                    
+                    " />
+                    <button 
+                    class="btn1 btn-1" 
+                    (click)="showAddWarehousingDialog()"
+                    style="margin-left: 240px;">
+                    <a href="#">新增</a>
+                    </button>
+                </form>
+            </div>
+            <div>
+                    <p-dialog
+                    header="新增入库数据"
+                    [(visible)]="addWarehousingDialogIsVisible"
+                    >
+                        <form [formGroup]="addWarehousingFrom" class="form">
+                            <label htmlFor="expandName" class="label2">入库名字:&emsp;</label>
+                            <input
+                            pInputText
+                            id="expandName"
+                            formControlName="expandName"
+                            placeholder="请输入入库产品名字: "
+                            class="input2"
+                            style="width:400px"
+                            />
+                            <br/><br/>
+                            <label htmlFor="price" class="label2">价格（/元）:&emsp;</label>
+                            <input
+                            pInputText
+                            id="price"
+                            formControlName="price"
+                            placeholder="请输入产品价格: "
+                            class="input2"
+                            /><br/><br/>
+
+
+                            <label htmlFor="channel" class="label2">交易渠道:&emsp;</label>
+                            <input
+                            pInputText
+                            id="channel"
+                            formControlName="channel"
+                            placeholder="请输入交易渠道:"
+                            class="input2"
+                            />
+                
+                            <label htmlFor="channelWay" class="label2">交易方式:&emsp;</label>
+                            <input
+                            pInputText
+                            id="channelWay"
+                            formControlName="channelWay"
+                            placeholder="请输入交易方式："
+                            class="input2"
+                            /><br/><br/>
+
+                            <label htmlFor="responsiblePerson" class="label2">负责人:&emsp;</label>
+                            <input
+                            pInputText
+                            id="responsiblePerson"
+                            formControlName="responsiblePerson"
+                            placeholder="请输入负责人："
+                            class="input2"
+                            />
+                            <label htmlFor="buyer" class="label2">采购员:&emsp;</label>
+                            <input
+                            pInputText
+                            id="buyer"
+                            formControlName="buyer"
+                            placeholder="请输入采购员："
+                            class="input2"
+                            /><br/><br/>
+
+                            <label htmlFor="channelQuantity" class="label2">采购数量:&emsp;</label>
+                            <input
+                            pInputText
+                            id="channelQuantity"
+                            formControlName="channelQuantity"
+                            placeholder="请输入采购数量："
+                            class="input2"
+                            />
+                            <label htmlFor="warehousingQuantity" class="label2">入库数量（/台）:&emsp;</label>
+                            <input
+                            pInputText
+                            id="warehousingQuantity"
+                            formControlName="warehousingQuantity"
+                            placeholder="请输入入库数量："
+                            class="input2"
+                            /><br/><br/>
+                            <label htmlFor="returnQuantity" class="label2">退回数量（/台）:&emsp;</label>
+                            <input
+                            pInputText
+                            id="returnQuantity"
+                            formControlName="returnQuantity"
+                            placeholder="请输入退回数量："
+                            class="input2"
+                            />
+                            <label htmlFor="type" class="label2">产品类型:&emsp;</label>
+                                <p-dropdown 
+                                    formControlName="type"
+                                    [options]="warehousings" 
+                                    [(ngModel)]="selectedWarehousing" 
+                                    optionLabel="type" 
+                                    [showClear]="true" 
+                                    placeholder="请选择产品类型"
+                                >
+                                    <ng-template pTemplate="selectedItem">
+                                        <div *ngIf="selectedWarehousing" class="input3">
+                                        {{ selectedWarehousing.type }}
+                                        </div>
+                                    </ng-template>
+                                    <ng-template let-type pTemplate="item">
+                                        <div  class="input3">
+                                            {{type.type}}
+                                        </div>
+                                    </ng-template>
+                                </p-dropdown>
+                            <br/><br/><br/><br/><br/><br/>
+                        <button 
+                            class="btn12"
+                            (click)="addWarehousing()"
+                            style="margin-right: 20px;"
+                        ><span>添加</span></button>
+                        <button
+                            class="btn12"
+                            (click)="cancelAddWarehousing()"
+                            style="margin-left: 20px;"
+                        ><span>取消</span></button>
+                        </form>
+                    </p-dialog>          
+            </div>
+        </div>
+        
+        <div class="card">
+            
+            <p-table
+              [value]="result"
+              [tableStyle]="{ 'width': '1500px' }"
+              sortField="type"
+              sortMode="single"
+              dataKey="type"
+              rowGroupMode="subheader"
+              groupRowsBy="type"
+              [scrollable]="true"
+              scrollHeight="400px"
+              
+            >
+                <ng-template pTemplate="header">
+                    <tr style="width:1500px;">
+                        <th style="width:100px;">订单编号</th>
+                        <th style="width:300px;">商品名字</th>
+                        <th style="width:100px;">商品价格</th>
+                        <th style="width:100px;">商品类型</th>
+                        <th style="width:200px;">采购渠道</th>
+                        <th style="width:100px;">采购方式</th>
+                        <th style="width:100px;">负责人</th>
+                        <th style="width:100px;">采购员</th>
+                        <th pSortableColumn="channelQuantity" style="width:100px;">采购数量<p-sortIcon field="channelQuantity"></p-sortIcon></th>
+                        <th pSortableColumn="warehousingQuantity" style="width:100px;">入库数量<p-sortIcon field="warehousingQuantity"></p-sortIcon></th>
+                        <th pSortableColumn="returnQuantity" style="width:100px;">退回数量<p-sortIcon field="returnQuantity"></p-sortIcon></th>
+                        <th style="width:100px;">操作</th>
+                    </tr>
+                </ng-template>
+                <ng-template
+                    pTemplate="groupheader"
+                    let-warehousing
+                    let-rowIndex="rowIndex"
+                    let-expanded="expanded"
+                >
+                    <tr>
+                    <td colspan="13">
+                        <button
+                        type="button"
+                        pButton
+                        pRipple
+                        [pRowToggler]="warehousing"
+                        class="p-button-text p-button-rounded p-button-plain mr-2"
+                        style="width: 80px;height: 10px; font-weight: bold; font-size: 10px; text-align: center; color: blueviolet; background-color: none;"
+                        >
+                        >>>>
+                        </button>
+                        <span
+                        class="font-bold ml-2"
+                        style="font-size: 10px; color: blueviolet; margin-left: 5%;"
+                        >{{ warehousing.type }}</span
+                        >
+                    </td>
+                    </tr>
+                    <tr>
+                        <td colspan="13" class="text-right font-bold pr-6">
+                            <div >
+                            入库数量:
+                            {{ calculateWarehousingTotal(warehousing.type) }}
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+                
+                <ng-template pTemplate="rowexpansion" let-warehousing>
+                    
+                    <tr *ngIf="!warehousing.deleteFlag">
+                    <td >
+                        {{ warehousing.warehousingId }}
+                    </td>
+                    <td >
+                        {{ warehousing.expandName }}
+                    </td>
+                    <td >
+                        {{ warehousing.price }}
+                    </td>
+                    <td >
+                        {{ warehousing.type }}
+                    </td>
+                    <td >
+                        {{ warehousing.channel }}
+                    </td>
+                    <td >
+                        {{ warehousing.channelWay }}
+                    </td>
+                    <td >
+                        {{ warehousing.responsiblePerson }}
+                    </td>
+                    <td >
+                        {{ warehousing.buyer }}
+                    </td>
+                    <td >
+                        {{ warehousing.channelQuantity }}
+                    </td>
+                    <td>
+                        {{ warehousing.warehousingQuantity }}
+                    </td>
+                    <td>
+                        {{ warehousing.returnQuantity }}
+                    </td>
+                    <td >
+                        <!-- (click)="deleteBook(book.bookId)" -->
+                        <button class="fbtn" (click)="showDeleteWarehousingDialog(warehousing.warehousingId,warehousing.expandName,warehousing.type)"><span>删除</span>
+                        </button>
+                        <div>
+                            <p-dialog
+                            header="删除数据"
+                            [(visible)]="deleteWarehousingDialogIsVisible"
+                            >
+                                <form class="form">
+                                <span class="shifou">是否删除数据</span>
+                                <br/><br/><br/>
+                                <div class="kj">
+                                <button 
+                                    class="btn14"
+                                    (click)="deleteWarehousing()"
+                                    style="margin-right: 20px;"
+                                ><span>删除</span></button>
+                                <button
+                                    class="btn14"
+                                    (click)="cancelDeleteWarehousing()"
+                                    style="margin-left: 20px;"
+                                ><span>取消</span></button>
+                                </div>
+                                </form>
+                            </p-dialog> 
+                        </div>
+                        <!-- (click)="showUpdateForm(book)" -->
+                        <button class="fbtn" (click)="showUpdateWarehousingDialog(warehousing.warehousingId,warehousing.expandName,warehousing.type,warehousing)"><span>修改</span>
+                        </button>
+                        <div>
+                            <p-dialog
+                            header="修改入库数据"
+                            [(visible)]="updateWarehousingDialogIsVisible"
+                            >
+                                <form [formGroup]="updateWarehousingFrom" class="form">
+                                    <!-- <label class="old">旧入库名字:{{all.expandName}}<br/>旧价格（/元）:{{all.price}}</label><br/> -->
+                                    <label htmlFor="expandName" class="label2">新入库名字:&emsp;</label>
+                                    <input
+                                    pInputText
+                                    id="expandName"
+                                    formControlName="expandName"
+                                    ngModel="{{new.expandName}}"
+                                    class="input2"
+                                    placeholder="请输入新入库名字:"
+                                    readonly
+                                    />
+                    
+                                    <label htmlFor="price" class="label2">新价格（/元）:&emsp;</label>
+                                    <input
+                                    pInputText
+                                    id="price"
+                                    formControlName="price"
+                                    placeholder="请输入新产品价格: "
+                                    ngModel="{{new.price}}"
+                                    class="input2"
+                                    />
+                                    <br/><br/>
+                                    
+                    
+                                    <!-- <label class="old">旧交易渠道:{{all.channel}}<br/>旧交易方式:{{all.channelWay}}</label><br/> -->
+                                    <label htmlFor="channel" class="label2">新交易渠道:&emsp;</label>
+                                    <input
+                                    pInputText
+                                    id="channel"
+                                    formControlName="channel"
+                                    placeholder="请输入新交易渠道:"
+                                    ngModel="{{new.channel}}"
+                                    class="input2"
+                                    />
+                        
+                                    <label htmlFor="channelWay" class="label2">新交易方式:&emsp;</label>
+                                    <input
+                                    pInputText
+                                    id="channelWay"
+                                    formControlName="channelWay"
+                                    placeholder="请输入新交易方式："
+                                    ngModel="{{new.channelWay}}"
+                                    class="input2"
+                                    /><br/><br/>
+                    
+                                    <!-- <label class="old">旧负责人:{{all.responsiblePerson}}<br/>旧采购员:{{all.buyer}}</label><br/> -->
+                                    <label htmlFor="responsiblePerson" class="label2">新负责人:&emsp;</label>
+                                    <input
+                                    pInputText
+                                    id="responsiblePerson"
+                                    formControlName="responsiblePerson"
+                                    placeholder="请输入新负责人："
+                                    ngModel="{{new.responsiblePerson}}"
+                                    class="input2"
+                                    />
+                                    <label htmlFor="buyer" class="label2">新采购员:&emsp;</label>
+                                    <input
+                                    pInputText
+                                    id="buyer"
+                                    formControlName="buyer"
+                                    placeholder="请输入新采购员："
+                                    ngModel="{{new.buyer}}"
+                                    class="input2"
+                                    /><br/><br/>
+                    
+                                    <!-- <label class="old">旧采购数量:{{all.channelQuantity}}<br/>旧产品类型:{{all.type}}</label><br/> -->
+                                    <label htmlFor="channelQuantity" class="label2">新采购数量:&emsp;</label>
+                                    <input
+                                    pInputText
+                                    id="channelQuantity"
+                                    formControlName="channelQuantity"
+                                    placeholder="请输入新采购数量："
+                                    ngModel="{{new.channelQuantity}}"
+                                    class="input2"
+                                    />  
+                                    <label htmlFor="warehousingQuantity" class="label2">新入库数量:&emsp;</label>
+                                    <input
+                                    pInputText
+                                    id="warehousingQuantity"
+                                    formControlName="warehousingQuantity"
+                                    placeholder="请输入新入库数量："
+                                    ngModel="{{new.warehousingQuantity}}"
+                                    class="input2"
+                                    /><br/><br/>
+                                    <label htmlFor="returnQuantity" class="label2">新返还数量:&emsp;</label>
+                                    <input
+                                    pInputText
+                                    id="returnQuantity"
+                                    formControlName="returnQuantity"
+                                    placeholder="请输入新返还数量："
+                                    ngModel="{{new.returnQuantity}}"
+                                    class="input2"
+                                    /><br/><br/>
+                                    <button 
+                                        class="btn13"
+                                        (click)="updateWarehousing()"
+                                        style="margin-right: 20px; color: aliceblue;"
+                                    ><span>修改</span></button>
+                                    <button
+                                        class="btn13"
+                                        (click)="cancelUpdateWarehousing()"
+                                        style="margin-left: 20px; color: aliceblue;"
+                                    ><span>取消</span></button>
+                                    </form>
+                            </p-dialog>          
+                        </div>
+                    </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            
+        </div>
+    </div>
+
+
+    <div class="dyj" *ngIf="Printer">
+        <div class="text-animation">
+            <h1>
+                <span>打</span>
+                <span>印</span>
+                <span>机</span>
+                <span>展</span>
+                <span>示</span>
+                <span>表</span>
+                <span>格</span>
+            </h1>
+        </div>
+        <div class="under">
+            <div class="btnSet">
+                <form [formGroup]="searchPrinterFormGroup">
+                    <label class="label" htmlFor="printerName">打印机名字</label>
+                    <input 
+                    pInputText
+                    id="printerName"
+                    formControlName="printerName"
+                    placeholder="请输入打印机名字:" 
+                    style="color:blueviolet;
+                        font-size: 10px;
+                        border: none;
+                        border-radius: 10px;
+                        height: 15px;
+                        "  />
+                    <label class="label" htmlFor="printerName">价格</label>
+                    <input 
+                    pInputText
+                    id="price"
+                    formControlName="price"
+                    placeholder="0" 
+                    style="color:blueviolet;
+                        font-size: 10px;
+                        border: none;
+                        border-radius: 10px;
+                        height: 15px;
+                        width:40px;
+                        "  />
+                    <span style="color:#fff;font-size: 20px;">~</span>
+                    <input 
+                    pInputText
+                    id="price1"
+                    formControlName="price1"
+                    placeholder="0" 
+                    style="color:blueviolet;
+                        font-size: 10px;
+                        border: none;
+                        border-radius: 10px;
+                        height: 15px;
+                        width:40px;
+                        "  />
+                    <button 
+                    class="btn1 btn-1"
+                    (click)="searchPrinter()"
+                    style="margin-left: 50px;"
+                    >
+                    <a href="#">检索</a>
+                    </button>
+                    <button type="reset" class="btn1 btn-1" style="color:azure;margin-left: 10px;">清空</button>
+                    <br/>
+                </form>
+            </div>
+        </div>
+        <div class="card">
+            <p-table
+                [value]="result2"
+                [tableStyle]="{ 'width': '1100px' }"
+                [paginator]="true"
+                (onPageChange)="onPageChange($event)"
+                [first]="first"
+                [rows]="rows"
+                [totalRecords]="totalRecords"
+                [rowsPerPageOptions]="[10, 20, 30]"
+                [scrollable]="true"
+                scrollHeight="400px"
+            >
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width:200px">打印机编号</th>
+                        <th style="width:500px">打印机名字</th>
+                        <th pSortableColumn="price" style="width:200px">打印机价格（/元）<p-sortIcon field="price"></p-sortIcon></th>
+                        <th pSortableColumn="inventory" style="width:200px">库存(/件)<p-sortIcon field="inventory"></p-sortIcon></th>
+                    </tr> 
+                </ng-template>
+
+                <ng-template pTemplate="body" let-printer>
+                    <tr *ngIf="!printer.deleteFlag">
+                    <td>
+                        {{ printer.printerId }}
+                    </td>
+                    <td>
+                        {{ printer.printerName }}
+                    </td>
+                    <td>
+                        {{ printer.price }}
+                    </td>
+                    <td>
+                        {{ printer.inventory }}
+                    </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+
+    
+    <div class="zb" *ngIf="Circum">
+        <div class="text-animation">
+            <h1>
+                <span>周</span>
+                <span>边</span>
+                <span>展</span>
+                <span>示</span>
+                <span>表</span>
+                <span>格</span>
+            </h1>
+        </div>
+        <div class="under">
+            <div class="btnSet">
+                <form [formGroup]="searchCircumFormGroup">
+                    <label class="label" htmlFor="circumName">周边名字</label>
+                    <input 
+                    pInputText
+                    id="circumName"
+                    formControlName="circumName"
+                    placeholder="请输入周边名字:" 
+                    style="color:blueviolet;
+                        font-size: 10px;
+                        border: none;
+                        border-radius: 10px;
+                        height: 15px;
+                        
+                        "  />
+                    <label class="label" htmlFor="printerName">价格</label>
+                    <input 
+                    pInputText
+                    id="price"
+                    formControlName="price"
+                    placeholder="0" 
+                    style="color:blueviolet;
+                        font-size: 10px;
+                        border: none;
+                        border-radius: 10px;
+                        height: 15px;
+                        width:40px;
+                        "  />
+                    <span style="color:#fff;font-size: 20px;">~</span>
+                    <input 
+                    pInputText
+                    id="price1"
+                    formControlName="price1"
+                    placeholder="0" 
+                    style="color:blueviolet;
+                        font-size: 10px;
+                        border: none;
+                        border-radius: 10px;
+                        height: 15px;
+                        width:40px;
+                        "  />
+                    <button 
+                    class="btn1 btn-1"
+                    (click)="searchCircum()"
+                    style="margin-left: 50px;"
+                    >
+                    <a href="#">检索</a>
+                    </button>
+                    <button type="reset" class="btn1 btn-1" style="color:azure;margin-left: 10px;">清空</button>
+                    <br/>
+                </form>
+            </div>
+        </div>
+        <div class="card">
+            <p-table
+                [value]="result3"
+                [tableStyle]="{ 'width': '1100px' }"
+                [paginator]="true"
+                (onPageChange)="onPageChange($event)"
+                [first]="first"
+                [rows]="rows"
+                [totalRecords]="totalRecords"
+                [rowsPerPageOptions]="[10, 20, 30]"
+                [scrollable]="true"
+                scrollHeight="400px"
+            >
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width:200px">周边编号</th>
+                        <th style="width:500px">周边名字</th>
+                        <th pSortableColumn="price" style="width:200px">周边价格（/元）<p-sortIcon field="price"></p-sortIcon></th>
+                        <th pSortableColumn="inventory" style="width:200px">库存(/件)<p-sortIcon field="inventory"></p-sortIcon></th>
+                    </tr> 
+                </ng-template>
+
+                <ng-template pTemplate="body" let-circum>
+                    <tr *ngIf="!circum.deleteFlag">
+                    <td>
+                        {{ circum.circumId }}
+                    </td>
+                    <td>
+                        {{ circum.circumName }}
+                    </td>
+                    <td>
+                        {{ circum.price }}
+                    </td>
+                    <td>
+                        {{ circum.inventory }}
+                    </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+    
+    <div class="xhp" *ngIf="Expand">
+        <div class="text-animation">
+            <h1>
+                <span>消</span>
+                <span>耗</span>
+                <span>品</span>
+                <span>展</span>
+                <span>示</span>
+                <span>表</span>
+                <span>格</span>
+            </h1>
+        </div>
+        <div class="under">
+            <div class="btnSet">
+                <form [formGroup]="searchExpandFormGroup">
+                    <label class="label" htmlFor="expandName">消耗品名字</label>
+                    <input 
+                    pInputText
+                    id="expandName"
+                    formControlName="expandName"
+                    placeholder="请输入消耗品名字:" 
+                    style="color:blueviolet;
+                        font-size: 10px;
+                        border: none;
+                        border-radius: 10px;
+                        height: 15px;
+                        "  />
+                     
+                    <button 
+                    class="btn1 btn-1"
+                    (click)="searchExpand()"
+                    style="margin-left: 50px;"
+                    >
+                    <a href="#">检索</a>
+                    </button>
+                    <button type="reset" class="btn1 btn-1" style="color:azure;margin-left: 10px;">清空</button>
+                    <br/>
+                </form>
+            </div>
+        </div>
+        <div class="card">
+            <p-table
+                [value]="result4"
+                [tableStyle]="{ 'width': '1100px' }"
+                [paginator]="true"
+                (onPageChange)="onPageChange($event)"
+                [first]="first"
+                [rows]="rows"
+                [totalRecords]="totalRecords"
+                [rowsPerPageOptions]="[10, 20, 30]"
+                [scrollable]="true"
+                scrollHeight="400px"
+            >
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width:300px">消耗品编号</th>
+                        <th style="width:500px">消耗品名字</th>
+                        <th pSortableColumn="inventory" style="width:300px">库存(/件)<p-sortIcon field="inventory"></p-sortIcon></th>
+                    </tr> 
+                </ng-template>
+
+                <ng-template pTemplate="body" let-expand>
+                    <tr *ngIf="!expand.deleteFlag">
+                    <td>
+                        {{ expand.expandId }}
+                    </td>
+                    <td>
+                        {{ expand.expandName }}
+                    </td>
+                    <td>
+                        {{ expand.inventory }}
+                    </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+    
+</div>

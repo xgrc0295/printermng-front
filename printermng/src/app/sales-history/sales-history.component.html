@@ -1,0 +1,384 @@
+<div class="container">
+  <div class="content">
+    <p-card>
+      <form [formGroup]="searchSalesFormGroup">
+        <table [cellPadding]="5" [cellSpacing]="15" style="margin: auto">
+          <tr>
+            <td>
+              <label htmlFor="printerName">产品名称：</label>
+              <input
+                pInputText
+                id="printerName"
+                formControlName="printerName"
+              />
+            </td>
+            <td>
+              <label htmlFor="empName">员工名称：</label>
+              <input pInputText id="empName" formControlName="empName" />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label htmlFor="customerName">顾客名称：</label>
+              <input
+                pInputText
+                id="customerName"
+                formControlName="customerName"
+              />
+            </td>
+            <td>
+              <label htmlFor="notes">备注信息：</label>
+              <textarea
+                [style]="{ width: '65.5%' }"
+                rows="1"
+                cols="25"
+                pInputTextarea
+                formControlName="notes"
+              ></textarea>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <p-button
+                style="padding-left: 50px"
+                label="清空"
+                (onClick)="resetSearch()"
+                styleClass="p-button-outlined p-button-danger"
+              ></p-button>
+            </td>
+            <td>
+              <p-button (onClick)="searchSales()">检索</p-button>
+            </td>
+          </tr>
+        </table>
+      </form>
+      <p *ngIf="!searchSalesResult">暂无检索结果，请点击检索按钮进行检索！</p>
+      <p *ngIf="searchSalesResult">检索结果如下：</p>
+      <div class="history-table">
+        <p-table
+          *ngIf="searchSalesResult"
+          [value]="searchSalesResult"
+          [tableStyle]="{ 'min-width': '50rem' }"
+          [paginator]="true"
+          [first]="first"
+          [rows]="rows"
+          (onPageChange)="onPageChange($event)"
+          [rowsPerPageOptions]="[5, 10, 15]"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th>销售编号</th>
+              <th>产品名称</th>
+              <th>产品单价</th>
+              <th>出货单价</th>
+              <th>出货数量</th>
+              <th>出货总价</th>
+              <th>出货利润</th>
+              <th>出货日期</th>
+              <th>员工姓名</th>
+              <th>顾客姓名</th>
+              <th>销售备注</th>
+              <th colspan="3">操作</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-sales>
+            <tr>
+              <td>{{ sales.salesId }}</td>
+              <td>{{ sales.printerName }}</td>
+              <td>{{ sales.printerPrice }}</td>
+              <td>{{ sales.price }}</td>
+              <td>{{ sales.quantity }}</td>
+              <td>{{ sales.quantity * sales.price }}</td>
+              <td>
+                {{ sales.quantity * (sales.price - sales.printerPrice) }}
+              </td>
+              <td>{{ sales.shippingDate }}</td>
+              <td>{{ sales.empName }}</td>
+              <td>{{ sales.customerName }}</td>
+              <td>{{ sales.notes }}</td>
+              <td>
+                <p-button
+                  label="删除"
+                  styleClass="p-button-outlined p-button-danger"
+                  (click)="confirm($event, sales.salesId)"
+                ></p-button>
+                <p-confirmPopup></p-confirmPopup>
+              </td>
+              <td>
+                <p-button
+                  label="修改"
+                  styleClass="p-button-outlined"
+                  (onClick)="updateSales(sales)"
+                ></p-button>
+              </td>
+              <td *ngIf="!sales.warehoused">
+                <p-button
+                  label="出库核销"
+                  styleClass="p-button-outlined p-button-success"
+                  (onClick)="warehouseOut(sales)"
+                ></p-button>
+              </td>
+              <td *ngIf="sales.warehoused">
+                <p-button
+                  [disabled]="true"
+                  label="已核销"
+                  styleClass="p-button-outlined p-button-success"
+                ></p-button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </p-card>
+
+    <p-dialog
+      header="出库"
+      [(visible)]="warehouseOutIsVisible"
+      [style]="{ width: '300px', height: '500px' }"
+    >
+      <table [cellPadding]="5" [cellSpacing]="15" style="margin: auto">
+        <tr>
+          <p>请选择出库操作人员：</p>
+        </tr>
+        <tr>
+          <p-dropdown
+            [options]="employeeResult"
+            [(ngModel)]="selectedEmployee"
+            id="empName"
+            [filter]="true"
+            filterBy="empName"
+            emptyMessage="请录入员工信息"
+            emptyFilterMessage="未查询到相关结果"
+            [showClear]="true"
+            placeholder="请选择员工名称"
+          >
+            <ng-template pTemplate="selectedItem">
+              <div
+                class="flex align-items-center gap-2"
+                *ngIf="selectedEmployee"
+              >
+                <div>{{ selectedEmployee.empName }}</div>
+              </div>
+            </ng-template>
+            <ng-template let-employee pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <div>{{ employee.empName }}</div>
+              </div>
+            </ng-template>
+          </p-dropdown>
+        </tr>
+        <tr>
+          <p-button
+            label="取消"
+            styleClass="p-button-outlined p-button-danger"
+            (onClick)="warehouseCancel()"
+          ></p-button>
+
+          <p-button
+            style="padding-left: 50px"
+            label="确认"
+            (onClick)="warehouseOutConfrim()"
+            styleClass="p-button-outlined"
+          ></p-button>
+        </tr>
+      </table>
+    </p-dialog>
+
+    <!-- 更新 -->
+    <p-dialog
+      header="修改"
+      [(visible)]="updateSalesIsVisible"
+      [style]="{ width: '900px', height: '500px' }"
+    >
+      <form>
+        <table [cellPadding]="5" [cellSpacing]="15" style="margin: auto">
+          <tr>
+            <td>
+              <label htmlFor="printerName">产品名称：</label>
+              <p-dropdown
+                [options]="printersResult"
+                optionLabel="printerName"
+                [(ngModel)]="selectedPrinter"
+                name="printerName"
+                id="printerName"
+                [filter]="true"
+                filterBy="printerName"
+                emptyMessage="请录入产品信息"
+                emptyFilterMessage="未查询到相关结果"
+                [showClear]="true"
+                placeholder="请选择产品名称"
+              >
+                <ng-template pTemplate="selectedItem">
+                  <div
+                    class="flex align-items-center gap-2"
+                    *ngIf="selectedPrinter"
+                  >
+                    <div>{{ selectedPrinter.printerName }}</div>
+                  </div>
+                </ng-template>
+                <ng-template let-printer pTemplate="item">
+                  <div class="flex align-items-center gap-2">
+                    <div>{{ printer.printerName }}</div>
+                  </div>
+                </ng-template>
+              </p-dropdown>
+            </td>
+            <td>
+              <label htmlFor="printerPrice">产品原价：</label>
+              <input
+                readonly
+                [(ngModel)]="printerPrice"
+                pInputText
+                name="printerPrice"
+                value="{{ printerPrice }} 元"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label htmlFor="empName">员工名称：</label>
+              <p-dropdown
+                [options]="employeeResult"
+                [(ngModel)]="selectedEmployee"
+                name="selectedEmployee"
+                [filter]="true"
+                filterBy="empName"
+                emptyMessage="请录入员工信息"
+                emptyFilterMessage="未查询到相关结果"
+                [showClear]="true"
+                placeholder="请选择员工名称"
+              >
+                <ng-template pTemplate="selectedItem">
+                  <div
+                    class="flex align-items-center gap-2"
+                    *ngIf="selectedEmployee"
+                  >
+                    <div>{{ selectedEmployee.empName }}</div>
+                  </div>
+                </ng-template>
+                <ng-template let-employee pTemplate="item">
+                  <div class="flex align-items-center gap-2">
+                    <div>{{ employee.empName }}</div>
+                  </div>
+                </ng-template>
+              </p-dropdown>
+            </td>
+            <td>
+              <label htmlFor="customerName">顾客名称：</label>
+              <p-dropdown
+                [options]="customersResult"
+                [(ngModel)]="selectedCustomer"
+                name="customerName"
+                [filter]="true"
+                filterBy="customerName"
+                emptyMessage="请录入顾客信息"
+                emptyFilterMessage="未查询到相关结果"
+                [showClear]="true"
+                placeholder="请选择产品名称"
+              >
+                <ng-template pTemplate="selectedItem">
+                  <div
+                    class="flex align-items-center gap-2"
+                    *ngIf="selectedCustomer"
+                  >
+                    <div>{{ selectedCustomer.customerName }}</div>
+                  </div>
+                </ng-template>
+                <ng-template let-customer pTemplate="item">
+                  <div class="flex align-items-center gap-2">
+                    <div>{{ customer.customerName }}</div>
+                  </div>
+                </ng-template>
+              </p-dropdown>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label htmlFor="shippingDate">销售时间：</label>
+              <p-calendar
+                name="shippingDate"
+                [(ngModel)]="shippingDate"
+                [showIcon]="true"
+                dateFormat="dd-mm-yy"
+              ></p-calendar>
+            </td>
+            <td>
+              <label htmlFor="quantity">出货数量：</label>
+              <p-inputNumber
+                name="quantity"
+                [(ngModel)]="quantity"
+                placeholder="请输入销售数量"
+                inputId="integeronly"
+              ></p-inputNumber>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label htmlFor="price">出货单价：</label>
+              <p-inputNumber
+                [minFractionDigits]="2"
+                [(ngModel)]="price"
+                name="price"
+              ></p-inputNumber>
+            </td>
+            <td>
+              <label htmlFor="totalPrice">出货总价：</label>
+              <input
+                readonly
+                pInputText
+                name="totalPrice"
+                value="{{ quantity * price }} 元"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label htmlFor="profile">出货利润：</label>
+              <input
+                readonly
+                pInputText
+                name="profile"
+                value="{{ quantity * (price - printerPrice) }} 元"
+              />
+            </td>
+            <td>
+              <label htmlFor="notes">备注信息：</label>
+              <textarea
+                rows="1"
+                cols="25"
+                pInputTextarea
+                [(ngModel)]="notes"
+                name="notes"
+              ></textarea>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label htmlFor="warehoused">已出库：</label>
+              <p-selectButton
+                [options]="isWarehoused"
+                optionLabel="label"
+                optionValue="value"
+                [(ngModel)]="warehoused"
+                name="warehoused"
+              ></p-selectButton>
+            </td>
+            <td>
+              <p-button
+                label="取消"
+                styleClass="p-button-outlined p-button-danger"
+                (onClick)="updateSalesCancel()"
+              ></p-button>
+
+              <p-button
+                label="更新"
+                styleClass="p-button-outlined"
+                (onClick)="updateSalesConfirm()"
+              ></p-button>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </p-dialog>
+  </div>
+</div>

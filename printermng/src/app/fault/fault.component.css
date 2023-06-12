@@ -1,0 +1,24 @@
+.top{
+    font-size: x-small;
+    padding-left: 50px;
+}
+.mid{
+    font-size: xx-small;
+
+}
+.bottom{
+    font-size: xx-small;
+    color: aquamarine;
+    
+}
+td{
+    color:gray;
+}
+.b1{
+    float:right;
+    padding-right:500px;
+    
+}
+.showFault{
+    padding-top: 50px;
+}

@@ -1,0 +1,288 @@
+<h1 style="text-align: center;">更新故障</h1>
+<!-- 添加故障 -->
+<div>
+  <form [formGroup]="addFaultFromGroup">
+  <div class="group1">
+      <label htmlFor="faultName">故障名称：</label>
+      <input
+        pInputText
+        id="faultName"
+        formControlName="faultName"
+        placeholder="请输入故障名称"
+      /><br />
+
+      <label htmlFor="faultDescrip">故障描述：</label>
+      <input
+        pInputText
+        id="faultDescrip"
+        formControlName="faultDescrip"
+        placeholder="请输入故障描述"
+      /><br />
+
+      <label htmlFor="faultReason">故障原因：</label>
+
+      <input
+        pInputText
+        id="faultReason"
+        formControlName="faultReason"
+        placeholder="请输入故障原因"
+      /><br />
+
+      <label htmlFor="faultSolve">解决方法：</label>
+
+      <input
+        pInputText
+        id="faultSolve"
+        formControlName="faultSolve"
+        placeholder="请输入解决方法"
+      /><br />
+
+      <label htmlFor="empId">员工Id：</label>
+
+      <input
+        pInputText
+        id="empId"
+        formControlName="empId"
+        placeholder="请输入员工Id"
+      /><br />
+      <label htmlFor="empName">员工姓名：</label>
+
+      <input
+        pInputText
+        id="empName"
+        formControlName="empName"
+        placeholder="请输入员员工姓名"
+      /><br />
+  </div>
+
+
+  <div class="group2">
+
+  
+      <label htmlFor="customerName">客户姓名：</label>
+
+      <input
+        pInputText
+        id="customerName"
+        formControlName="customerName"
+        placeholder="请输入客户姓名"
+      /><br />
+      <label htmlFor="customerAddress">客户地址：</label>
+
+      <input
+        pInputText
+        id="customerAddress"
+        formControlName="customerAddress"
+        placeholder="请输入客户地址"
+      /><br />
+      <label htmlFor="orderNumber">订单编号：</label>
+
+      <input
+        pInputText
+        id="orderNumber"
+        formControlName="orderNumber"
+        placeholder="请输入订单编号"
+      /><br />
+<br />
+  </div>
+  </form>
+</div>
+
+<div class="addbutton">
+      <p-button
+        label="添加"
+        styleClass="p-button-outlined"
+        (onClick)="addFault()"
+      ></p-button>&nbsp;&nbsp;&nbsp;&nbsp;
+
+      <p-button
+        label="取消"
+        styleClass="p-button-outlined p-button-danger"
+        (onClick)="cancelAddFault()"
+      ></p-button>
+</div>
+<!-- 故障表格 -->
+
+<div class="showFault">
+    <p-table
+        [value]="result"
+      [tableStyle]="{ 'min-width': '50rem' }"
+        
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>维修编号：</th>
+          <th>故障名称：</th>
+          <th style="width: 40%;">故障描述：</th>
+          <th>维修员工：</th>
+          <th>客户姓名：</th>
+          <th>订单编号：</th>
+          <th colspan="2">操作</th>
+        </tr>
+      </ng-template>
+  
+      <ng-template pTemplate="body" let-fault>
+        <tr>
+          <td>{{ fault.faultId }}</td>
+          <td>{{fault.faultName}}</td>
+          <td>
+            {{ fault.faultDescrip }}
+          </td>
+          <td>{{ fault.empName }}</td>
+          <td>{{ fault.customerName }}</td>
+          <td>{{ fault.orderNumber }}</td>
+          <!-- <td>
+            <p-button
+              label="删除"
+              styleClass="p-button-outlined p-button-danger"
+            ></p-button>
+          </td> -->
+          <td>
+            <p-button
+              label="修改"
+              styleClass="p-button-rounded p-button-success"
+              (click)="showUpdateForm(fault)"
+            ></p-button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+<!-- 更新故障 -->
+<div class="app">
+
+  <div class="nav">
+<div class="saveFault" *ngIf="showUpdateFaultForm">
+  <p-dialog
+
+    header="修改故障"
+
+    [(visible)]="showUpdateFaultForm"
+
+    [style]="{ width: '50vw' }"
+
+  >
+  
+
+    <fieldset>
+      <form>
+      <label for="faultName">故障名称：</label>
+      <input
+      pInputText
+      size="20"
+        name="faultName"
+        id="faultName"
+        [(ngModel)]="currentFault.faultName"
+        placeholder="请输入故障名称"
+        required
+      /><br />
+      <label for="faultDescrip">故障描述：</label>
+      <input
+      pInputText
+      size="50"
+        name="faultDescrip"
+        id="faultDescrip"
+        [(ngModel)]="currentFault.faultDescrip"
+        placeholder="请输入故障描述"
+        required
+      /><br />
+      
+      <label for="faultReason">故障原因：</label>
+      <input
+      pInputText
+      size="50"
+        name="faultReason"
+        id="faultReason"
+        [(ngModel)]="currentFault.faultReason"
+        placeholder="请输入故障原因"
+        required
+      /><br />
+
+      <label for="faultSolve">解决方式：</label>
+      <input
+      pInputText
+      size="50"
+        name="faultSolve"
+        id="faultSolve"
+        [(ngModel)]="currentFault.faultSolve"
+        placeholder="请输入解决方式"
+        required
+      /><br />
+
+      <label for="empId">员工ID ：</label>
+      <input
+      pInputText
+        name="empId"
+        id="empId"
+        [(ngModel)]="currentFault.empId"
+        placeholder="请输入员工ID"
+        required
+      /><br />
+      <label for="empName">员工姓名：</label>
+      <input
+      pInputText
+        name="empName"
+        id="empName"
+        [(ngModel)]="currentFault.empName"
+        placeholder="请输入员工姓名"
+        required
+      /><br />
+      <label for="customerName">用户姓名：</label>
+      <input
+      pInputText
+        name="customerName"
+        id="customerName"
+        [(ngModel)]="currentFault.customerName"
+        placeholder="请输入用户姓名"
+        required
+      /><br />
+      <label for="customerAddress">用户地址：</label>
+      <input
+      pInputText
+        name="customerAddress"
+        id="customerAddress"
+        [(ngModel)]="currentFault.customerAddress"
+        placeholder="请输入用户地址"
+        required
+      /><br />
+      <label for="orderNumber">订单编号：</label>
+      <input
+      pInputText
+        name="orderNumber"
+        id="orderNumber"
+        [(ngModel)]="currentFault.orderNumber"
+        placeholder="请输入订单编号"
+        required
+      /><br />
+      
+      <p-button
+
+        label="修改"
+
+        styleClass="p-button-outlined"
+
+        (onClick)="updateFault()"
+
+      ></p-button>
+
+      <p-button
+
+        label="取消"
+
+        styleClass="p-button-outlined p-button-danger"
+
+        (onClick)="cancelUpdateFaultForm()"
+
+      ></p-button>
+      
+      <!-- <button type="submit" name="submit" (click)="updateEmp()">修改员工</button>
+      <button type="button" name="cancel" (click)="cancelUpdateEmpForm()">取消</button> -->
+    
+  </form>
+ </fieldset>
+</p-dialog>
+</div>
+</div>
+</div>
+

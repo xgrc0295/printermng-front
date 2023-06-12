@@ -1,0 +1,27 @@
+label {
+  display: inline-block;
+  width: 100px;
+  text-align: justify;
+  text-align-last: justify;
+  margin-right: 10px;
+}
+
+p-table td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+p-table {
+  table-layout: fixed;
+  width: 100%;
+  white-space: nowrap;
+}
+
+p-selectButton {
+  display: inline-block;
+}
+
+.history-table {
+  zoom: 0.5;
+}

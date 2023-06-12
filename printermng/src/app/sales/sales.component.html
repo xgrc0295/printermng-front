@@ -1,0 +1,241 @@
+<div class="card-container">
+  <p-card>
+    <div class="card-header">新增销售信息</div>
+    <div class="card-body">
+      <div class="scrollable-content">
+        <form [formGroup]="salesFormGroup">
+          <table [cellPadding]="5" [cellSpacing]="15" style="margin: auto">
+            <tr>
+              <td>
+                <label htmlFor="printerName">产品名称：</label>
+                <p-dropdown
+                  [options]="printersResult"
+                  optionLabel="printerName"
+                  [(ngModel)]="selectedPrinter"
+                  formControlName="printerName"
+                  id="printerName"
+                  [filter]="true"
+                  filterBy="printerName"
+                  emptyMessage="请录入产品信息"
+                  emptyFilterMessage="未查询到相关结果"
+                  [showClear]="true"
+                  placeholder="请选择产品名称"
+                  (onBlur)="getPrinterInfo(selectedPrinter.printerName)"
+                >
+                  <ng-template pTemplate="selectedItem">
+                    <div
+                      class="flex align-items-center gap-2"
+                      *ngIf="selectedPrinter"
+                    >
+                      <div>{{ selectedPrinter.printerName }}</div>
+                    </div>
+                  </ng-template>
+                  <ng-template let-printer pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                      <div>{{ printer.printerName }}</div>
+                    </div>
+                  </ng-template>
+                </p-dropdown>
+              </td>
+              <td>
+                <label htmlFor="price">产品原价：</label>
+                <input
+                  [disabled]="true"
+                  pInputText
+                  id="price"
+                  value="{{ price }} 元"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label htmlFor="empName">员工名称：</label>
+                <p-dropdown
+                  [options]="employeeResult"
+                  [(ngModel)]="selectedEmployee"
+                  formControlName="empName"
+                  id="empName"
+                  [filter]="true"
+                  filterBy="empName"
+                  emptyMessage="请录入员工信息"
+                  emptyFilterMessage="未查询到相关结果"
+                  [showClear]="true"
+                  placeholder="请选择员工名称"
+                >
+                  <ng-template pTemplate="selectedItem">
+                    <div
+                      class="flex align-items-center gap-2"
+                      *ngIf="selectedEmployee"
+                    >
+                      <div>{{ selectedEmployee.empName }}</div>
+                    </div>
+                  </ng-template>
+                  <ng-template let-employee pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                      <div>{{ employee.empName }}</div>
+                    </div>
+                  </ng-template>
+                </p-dropdown>
+              </td>
+              <td>
+                <label htmlFor="customerName">顾客名称：</label>
+                <p-dropdown
+                  [options]="customersResult"
+                  [(ngModel)]="selectedCustomer"
+                  id="customerName"
+                  [filter]="true"
+                  filterBy="customerName"
+                  emptyMessage="请录入顾客信息"
+                  emptyFilterMessage="未查询到相关结果"
+                  [showClear]="true"
+                  placeholder="请选择产品名称"
+                  formControlName="customerName"
+                >
+                  <ng-template pTemplate="selectedItem">
+                    <div
+                      class="flex align-items-center gap-2"
+                      *ngIf="selectedCustomer"
+                    >
+                      <div>{{ selectedCustomer.customerName }}</div>
+                    </div>
+                  </ng-template>
+                  <ng-template let-customer pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                      <div>{{ customer.customerName }}</div>
+                    </div>
+                  </ng-template>
+                </p-dropdown>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label htmlFor="date">销售时间：</label>
+                <p-calendar
+                  [style]="{ width: '61%' }"
+                  id="date"
+                  formControlName="date"
+                  [showIcon]="true"
+                  dateFormat="dd-mm-yy"
+                ></p-calendar>
+              </td>
+              <td>
+                <label htmlFor="quantity">出货数量：</label>
+                <p-inputNumber
+                  id="quantity"
+                  formControlName="quantity"
+                  placeholder="请输入销售数量"
+                  inputId="integeronly"
+                  [(ngModel)]="salesQuantity"
+                >
+                </p-inputNumber>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label htmlFor="salesPrice">出货单价：</label>
+                <p-inputNumber
+                  [(ngModel)]="salesPrice"
+                  [minFractionDigits]="2"
+                  formControlName="salesPrice"
+                ></p-inputNumber>
+              </td>
+              <td>
+                <label htmlFor="totalPrice">出货总价：</label>
+                <input
+                  [disabled]="true"
+                  pInputText
+                  id="totalPrice"
+                  value="{{ salesQuantity * salesPrice }} 元"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label htmlFor="profile">出货利润：</label>
+                <input
+                  [disabled]="true"
+                  pInputText
+                  id="profile"
+                  value="{{ salesQuantity * (salesPrice - price) }} 元"
+                />
+              </td>
+              <td>
+                <label htmlFor="notes">备注信息：</label>
+                <textarea
+                  [style]="{ width: '65.5%' }"
+                  rows="1"
+                  cols="25"
+                  pInputTextarea
+                  formControlName="notes"
+                ></textarea>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label htmlFor="warehoused">是否出库：</label>
+                <p-selectButton
+                  [options]="warehoused"
+                  formControlName="warehoused"
+                  optionLabel="label"
+                  optionValue="value"
+                ></p-selectButton>
+              </td>
+              <td>
+                <p-button
+                  label="清空"
+                  style="padding-left: 50px"
+                  (onClick)="resetSales()"
+                  styleClass="p-button-outlined p-button-danger"
+                ></p-button>
+
+                <p-button
+                  label="添加"
+                  style="padding-left: 50px"
+                  styleClass="p-button-outlined"
+                  (onClick)="saveSales()"
+                ></p-button>
+              </td>
+            </tr>
+          </table>
+        </form>
+      </div>
+    </div>
+    <div class="sales-table">
+      <p-table [value]="latestResult" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="caption"> 近五条销售记录 </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th>销售编号</th>
+            <th>产品名称</th>
+            <th>产品单价</th>
+            <th>出货单价</th>
+            <th>出货数量</th>
+            <th>出货总价</th>
+            <th>出货利润</th>
+            <th>出货日期</th>
+            <th>员工姓名</th>
+            <th>顾客姓名</th>
+            <th>销售备注</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-sales>
+          <tr>
+            <td>{{ sales.salesId }}</td>
+            <td>{{ sales.printerName }}</td>
+            <td>{{ sales.printerPrice }}</td>
+            <td>{{ sales.price }}</td>
+            <td>{{ sales.quantity }}</td>
+            <td>{{ sales.quantity * sales.price }}</td>
+            <td>
+              {{ sales.quantity * (sales.price - sales.printerPrice) }}
+            </td>
+            <td>{{ sales.shippingDate }}</td>
+            <td>{{ sales.empName }}</td>
+            <td>{{ sales.customerName }}</td>
+            <td>{{ sales.notes }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </p-card>
+</div>

@@ -1,0 +1,726 @@
+<p style="text-align: center">增加员工信息</p>
+
+<!-- 添加员工 -->
+
+<div>
+
+  <form [formGroup]="addEmpFromGroup">
+
+    <div class="group1">
+
+      <label htmlFor="empName">员工姓名：</label>
+
+      <input
+
+        pInputText
+
+        id="empName"
+
+        formControlName="empName"
+
+        placeholder="请输入员工姓名"
+
+      /><br />
+
+
+
+      <label htmlFor="empSex">员工性别：</label>
+
+      <input
+
+        pInputText
+
+        id="empSex"
+
+        formControlName="empSex"
+
+        placeholder="请输入员工性别"
+
+      /><br />
+
+
+
+      <label htmlFor="birthDateTime">出生日期：</label>
+
+
+
+      <input
+
+        pInputText
+
+        id="birthDateTime"
+
+        formControlName="birthDateTime"
+
+        placeholder="请输入日期yyyy-mm-dd"
+
+      /><br />
+
+
+
+      <label htmlFor="empEmail">员工邮箱：</label>
+
+
+
+      <input
+
+        pInputText
+
+        id="empEmail"
+
+        formControlName="empEmail"
+
+        placeholder="请输入员工邮箱"
+
+      /><br />
+
+
+
+      <label htmlFor="empPhone">员工电话：</label>
+
+
+
+      <input
+
+        pInputText
+
+        id="empPhone"
+
+        formControlName="empPhone"
+
+        placeholder="请输入员工电话号"
+
+      /><br />
+
+      <label htmlFor="sal">员工薪水：</label>
+
+
+
+      <input
+
+        pInputText
+
+        id="sal"
+
+        formControlName="sal"
+
+        placeholder="请输入员工薪水"
+
+      /><br />
+
+    </div>
+
+
+
+    <div class="group2">
+
+      <label htmlFor="job">员工职位：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+
+
+
+      <input
+
+        pInputText
+
+        id="job"
+
+        formControlName="job"
+
+        placeholder="请输入员工职位"
+
+      /><br />
+
+      <label htmlFor="deptId">所在部门编号：</label>
+
+
+
+      <input
+
+        pInputText
+
+        id="deptId"
+
+        formControlName="deptId"
+
+        placeholder="请输入员工所在部门编号"
+
+      /><br />
+
+      <label htmlFor="deptName">所在部门名称：</label>
+
+
+
+      <input
+
+        pInputText
+
+        id="deptName"
+
+        formControlName="deptName"
+
+        placeholder="请输入员工所在部门名称"
+
+      /><br />
+
+
+
+      <label htmlFor="bossId">上司ID：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+
+      <input
+
+        pInputText
+
+        id="bossId"
+
+        formControlName="bossId"
+
+        placeholder="请输入上司ID"
+
+      /><br />
+
+
+
+      <label htmlFor="bossName">上司姓名：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+
+      <input
+
+        pInputText
+
+        id="bossName"
+
+        formControlName="bossName"
+
+        placeholder="请输入上司姓名"
+
+      /><br />
+
+      <label htmlFor="empIdCard">员工身份证号：</label>
+
+
+
+      <input
+
+        pInputText
+
+        id="empIdCard"
+
+        formControlName="empIdCard"
+
+        placeholder="请输入员工身份证号"
+
+      /><br />
+
+    </div>
+
+  </form>
+
+</div>
+
+
+
+<div class="addbutton">
+
+  <p-button
+
+    label="添加"
+
+    styleClass="p-button-outlined"
+
+    (onClick)="addEmp()"
+
+  ></p-button><br><br>
+
+
+
+  <p-button
+
+    label="清除"
+
+    styleClass="p-button-outlined p-button-danger"
+
+    (onClick)="clean()"
+
+  ></p-button>
+
+</div>
+
+
+
+<!-- 员工表格 -->
+
+<div class="showEmployee">
+
+  <p-table
+
+    [value]="result"
+
+    [tableStyle]="{ 'min-width': '50rem' }"
+
+    [paginator]="false"
+
+    (onPageChange)="onPageChange($event)"
+
+    [first]="first"
+
+    [rows]="rows"
+
+    [totalRecords]="totalRecords"
+
+    [rowsPerPageOptions]="[10, 20, 30]"
+
+    [value]="result"
+
+    sortField="deptName"
+
+    sortMode="single"
+
+    dataKey="deptName"
+
+    rowGroupMode="subheader"
+
+    groupRowsBy="deptName"
+
+    [tableStyle]="{ 'min-width': '70rem' }"
+
+  >
+
+    <ng-template pTemplate="header">
+
+      <tr>
+
+        <th>员工ID：</th>
+
+        <th>员工姓名</th>
+
+        <th pSortableColumn="job" style="width: 15%;">员工职位： <p-sortIcon field="job"></p-sortIcon></th>
+
+        <th pSortableColumn="empSex" style="width:15%">员工性别： <p-sortIcon field="empSex" style="width: 30px;"></p-sortIcon></th>
+
+        <th >员工邮箱：</th>
+
+        <th >员工电话：</th>
+
+        <th pSortableColumn="sal" style="width:15%">员工薪水： <p-sortIcon field="sal"></p-sortIcon></th>
+
+        <th colspan="2">操作</th>
+
+      </tr>
+
+    </ng-template>
+
+
+
+    <ng-template
+
+      pTemplate="groupheader"
+
+      let-emp
+
+      let-rowIndex="rowIndex"
+
+      let-expanded="expanded"
+
+    >
+
+      <tr>
+
+        <td colspan="7">
+
+          <button
+
+            type="button"
+
+            pButton
+
+            pRipple
+
+            [pRowToggler]="emp"
+
+            class="p-button-text p-button-rounded p-button-plain"
+
+            [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+
+          ><svg t="1686274865110" 
+
+            class="icon" 
+
+            viewBox="0 0 1024 1024" 
+
+            version="1.1" 
+
+            xmlns="http://www.w3.org/2000/svg" 
+
+            p-id="1582" 
+
+            width="10" 
+
+            height="10">
+
+            <path d="M179.2 366.933333l298.666667 398.208a42.666667 42.666667 0 0 0 68.266666 0l298.666667-398.208A42.666667 42.666667 0 0 0 810.666667 298.666667H213.333333a42.666667 42.666667 0 0 0-34.133333 68.266666z" 
+
+            fill="#111111" 
+
+            p-id="1583">
+
+          </path>
+
+        </svg></button>
+
+          <span class="font-bold ml-2" aria-hidden="true">{{ emp.deptName }}</span>
+
+        </td>
+
+      </tr>
+
+    </ng-template>
+
+    <ng-template pTemplate="groupfooter" let-emp>
+
+      <tr class="p-rowgroup-footer">
+
+        <td colspan="9" style="text-align: right">Total Employee</td>
+
+        <td>{{ calculateCustomerTotal(emp.deptName) }}</td>
+
+      </tr>
+
+    </ng-template>
+
+
+
+    <ng-template pTemplate="rowexpansion" let-emp>
+
+      <tr>
+
+        <td>{{ emp.empId }}</td>
+
+        <td>{{ emp.empName }}</td>
+
+        <td>{{ emp.job }}</td>
+
+        <td>{{ emp.empSex }}</td>
+
+        <td>{{ emp.empEmail }}</td>
+
+        <td>{{ emp.empPhone }}</td>
+
+        <td>{{ emp.sal }}</td>
+
+        <td>
+
+          <p-button
+
+            label="修改"
+
+            styleClass="p-button-outlined p-button-success"
+
+            (click)="showUpdateForm(emp)"
+
+          ></p-button>
+
+        </td>
+
+        <td>
+
+          <p-button
+
+            label="删除"
+
+            styleClass="p-button-outlined p-button-danger"
+
+            (click)="deleteEmp(emp.empId)"
+
+          ></p-button>
+
+        </td>
+
+        
+
+      </tr>
+
+    </ng-template>
+
+  </p-table>
+
+</div>
+
+
+
+<!-- 更新员工信息 -->
+
+<div class="app">
+
+  <div class="nav">
+
+    <div class="saveEmp" *ngIf="showUpdateEmpForm">
+
+      <p-dialog
+
+        header="修改员工信息"
+
+        [(visible)]="showUpdateEmpForm"
+
+        [style]="{ width: '50vw' }"
+
+      >
+
+        <fieldset>
+
+          <form>
+
+            <label for="empName">员工姓名：</label>
+
+            <input
+
+              pInputText
+
+              name="empName"
+
+              id="empName"
+
+              [(ngModel)]="currentEmp.empName"
+
+              placeholder="请输入员工姓名"
+
+              required
+
+            /><br />
+
+            <label for="empSex">员工性别：</label>
+
+            <input
+
+              pInputText
+
+              name="empSex"
+
+              id="empSex"
+
+              [(ngModel)]="currentEmp.empSex"
+
+              placeholder="请输入员工性别"
+
+              required
+
+            /><br />
+
+
+
+            <label for="birthDateTime">出生日期</label>
+
+            <input
+
+              pInputText
+
+              name="birthDateTime"
+
+              id="birthDateTime"
+
+              [(ngModel)]="currentEmp.birthDateTime"
+
+              placeholder="请输入出生日期（如yyyy-mm-dd）"
+
+              required
+
+            /><br />
+
+
+
+            <label for="empEmail">员工email：</label>
+
+            <input
+
+              pInputText
+
+              name="empEmail"
+
+              id="empEmail"
+
+              [(ngModel)]="currentEmp.empEmail"
+
+              placeholder="请输入员工email"
+
+              required
+
+            /><br />
+
+
+
+            <label for="empPhone">员工电话号：</label>
+
+            <input
+
+              pInputText
+
+              name="empPhone"
+
+              id="empPhone"
+
+              [(ngModel)]="currentEmp.empPhone"
+
+              placeholder="请输入员工电话号"
+
+              required
+
+            /><br />
+
+            <label for="sal">员工薪水：</label>
+
+            <input
+
+              pInputText
+
+              name="sal"
+
+              id="sal"
+
+              [(ngModel)]="currentEmp.sal"
+
+              placeholder="请输入员工薪水"
+
+              required
+
+            /><br />
+
+            <label for="job">员工职位：</label>
+
+            <input
+
+              pInputText
+
+              name="job"
+
+              id="job"
+
+              [(ngModel)]="currentEmp.job"
+
+              placeholder="请输入员工职位"
+
+              required
+
+            /><br />
+
+            <label for="deptId">部门ID：</label>
+
+            <input
+
+              pInputText
+
+              name="deptId"
+
+              id="deptId"
+
+              [(ngModel)]="currentEmp.deptId"
+
+              placeholder="请输入部门ID"
+
+              required
+
+            /><br />
+
+            <label for="deptName">部门名称：</label>
+
+            <input
+
+              pInputText
+
+              name="deptName"
+
+              id="deptName"
+
+              [(ngModel)]="currentEmp.deptName"
+
+              placeholder="请输入部门名称"
+
+              required
+
+            /><br />
+
+            <label for="bossId">上司ID：</label>
+
+            <input
+
+              pInputText
+
+              name="bossId"
+
+              id="bossId"
+
+              [(ngModel)]="currentEmp.bossId"
+
+              placeholder="请输入上司ID"
+
+              required
+
+            /><br />
+
+            <label for="bossName">上司姓名：</label>
+
+            <input
+
+              pInputText
+
+              name="bossName"
+
+              id="bossName"
+
+              [(ngModel)]="currentEmp.bossName"
+
+              placeholder="请输入上司姓名"
+
+              required
+
+            /><br />
+
+            <label for="empIdCard">员工身份证号：</label>
+
+            <input
+
+              pInputText
+
+              name="empIdCard"
+
+              id="empIdCard"
+
+              [(ngModel)]="currentEmp.empIdCard"
+
+              placeholder="请输入员工身份证号"
+
+              required
+
+            /><br />
+
+            <p-button
+
+              label="修改"
+
+              styleClass="p-button-outlined"
+
+              (onClick)="updateEmp()"
+
+            ></p-button>
+
+
+
+            <p-button
+
+              label="取消"
+
+              styleClass="p-button-outlined p-button-danger"
+
+              (onClick)="cancelUpdateEmpForm()"
+
+            ></p-button>
+
+          </form>
+
+        </fieldset>
+
+      </p-dialog>
+
+    </div>
+
+  </div>
+
+</div>
+

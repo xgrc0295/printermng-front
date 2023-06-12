@@ -1,0 +1,54 @@
+p-selectButton {
+  display: inline-block;
+}
+
+.card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3%;
+}
+
+.p-card {
+  width: 500px;
+  height: 400px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+.card-header {
+  background-color: #f5f5f5;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 10px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.card-body {
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.scrollable-content {
+  max-height: calc(100% - 20px);
+}
+
+.sales-table {
+  zoom: 0.65;
+}
+p-table td,
+th {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+label {
+  display: inline-block;
+  width: 100px;
+  text-align: justify;
+  text-align-last: justify;
+  margin-right: 10px;
+}

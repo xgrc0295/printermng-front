@@ -1,0 +1,81 @@
+<div class="card-container">
+  <p-card>
+    <div class="card-header">打印机产品销售利润</div>
+    <div class="card-body">
+      <div class="scrollable-content">
+        <p-table
+          [style]="{ width: '100%', height: '400px' }"
+          [value]="printerProfileResult"
+          [tableStyle]="{ 'min-width': '50rem' }"
+          [paginator]="true"
+          [first]="first"
+          [rows]="rows"
+          (onPageChange)="onPageChange($event)"
+          [rowsPerPageOptions]="[5, 10, 15]"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th>产品编号</th>
+              <th>产品名字</th>
+              <th pSortableColumn="profile">
+                销售利润<p-sortIcon field="profile"></p-sortIcon>
+              </th>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-monthProfile>
+            <tr>
+              <td>{{ monthProfile.printerId }}</td>
+              <td>{{ monthProfile.printerName }}</td>
+              <td>{{ monthProfile.profile }} 元</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </p-card>
+</div>
+<div class="card-container">
+  <p-card>
+    <div class="card-header">月份销售利润</div>
+    <div class="card-body">
+      <div class="scrollable-content">
+        <p-table
+          [value]="monthProfileResult"
+          [tableStyle]="{ 'min-width': '50rem' }"
+          [paginator]="true"
+          [first]="first"
+          [rows]="rows"
+          (onPageChange)="onPageChange($event)"
+          [rowsPerPageOptions]="[5, 10, 15]"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th>销售月份</th>
+              <th pSortableColumn="monthProfile">
+                销售利润<p-sortIcon field="monthProfile"></p-sortIcon>
+              </th>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-printerProfile>
+            <tr>
+              <td>{{ printerProfile.month }}</td>
+              <td>{{ printerProfile.monthProfile }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </p-card>
+</div>
+<div class="card-container">
+  <p-card>
+    <div class="card-header">Card Title</div>
+    <div class="card-body">
+      <div class="scrollable-content">
+        <p-chart type="bar" [data]="data" [options]="options"></p-chart>
+      </div>
+    </div>
+  </p-card>
+</div>

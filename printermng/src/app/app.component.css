@@ -1,0 +1,9 @@
+.nav {
+  position: fixed;
+  float: left;
+}
+
+.content {
+  margin-left: 20%; /* 将内容区域向右偏移导航栏的宽度 */
+  padding: 20px; /* 添加一些内边距，使内容区域更加美观 */
+}

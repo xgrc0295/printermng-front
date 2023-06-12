@@ -1,0 +1,73 @@
+<!-- 排行榜对话框 -->
+<div id="rankstable" *ngIf="Ranksresult">
+  <p-card header="总订单排行">
+    <p-table
+      styleClass="ptable"
+      [value]="Ranksresult"
+      [tableStyle]="{ 'min-width': '50rem' }"
+      [paginator]="true"
+      (onPageChange)="RanksOnPageChange($event)"
+      [first]="Ranksfirst"
+      [rows]="Ranksrows"
+      [rowsPerPageOptions]="[10, 20, 30]"
+      *ngIf="Ranksresult.length != 0"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="salesId" style="text-align: center">
+            订单ID<p-sortIcon field="salesId"></p-sortIcon>
+          </th>
+          <th style="text-align: center">顾客姓名</th>
+          <th style="text-align: center">购买日期</th>
+          <th style="text-align: center" pSortableColumn="totalPrice">
+            订单总额(元)<p-sortIcon field="totalPrice"></p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-ranks>
+        <tr>
+          <td style="text-align: center">{{ ranks.salesId }}</td>
+          <td style="text-align: center">{{ ranks.customerName }}</td>
+          <td style="text-align: center">{{ ranks.shippingDate }}</td>
+          <td style="text-align: center">{{ ranks.totalPrice }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+</div>
+
+<div id="rankstables" *ngIf="Ranksresults">
+  <p-card header="各公司消费排行">
+    <p-table
+      styleClass="ptable"
+      [value]="Ranksresults"
+      [tableStyle]="{ 'min-width': '50rem' }"
+      [paginator]="true"
+      (onPageChange)="RanksOnPageChanges($event)"
+      [first]="Ranksfirsts"
+      [rows]="Ranksrowss"
+      [totalRecords]="RanksTotalRecordss"
+      [rowsPerPageOptions]="[10, 20, 30]"
+      *ngIf="Ranksresults.length != 0"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="text-align: center" pSortableColumn="companyName">
+            公司名称<p-sortIcon field="companyName"></p-sortIcon>
+          </th>
+          <th style="text-align: center" pSortableColumn="totalPrice">
+            购买总额(元)<p-sortIcon field="totalPrice"></p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-ranks>
+        <tr>
+          <td style="text-align: center">{{ ranks.companyName }}</td>
+          <td style="text-align: center">{{ ranks.totalPrice }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+</div>

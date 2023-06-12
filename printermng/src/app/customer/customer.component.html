@@ -1,0 +1,999 @@
+<div class="main">
+  <body>
+    <div id="topZone">
+      <div id="centerZone1">
+        <div id="center">
+          <form [formGroup]="searchCustomerFormGroup">
+            <div class="input-container">
+              <label
+                htmlFor="customerName"
+                class="input-label"
+                style="padding: 20px"
+                >顾客名：</label
+              >
+              <input
+                class="input-field"
+                pInputText
+                id="customerName"
+                formControlName="customerName"
+                placeholder="请输入顾客名："
+                style="margin: 0 auto"
+              />
+
+              <label htmlFor="companyName" style="padding: 0 20px 0 40px"
+                >公司名称：</label
+              >
+              <input
+                class="input-field"
+                pInputText
+                id="companyName"
+                formControlName="companyName"
+                placeholder="请输入公司名称："
+                style="margin: 0 auto"
+              />
+              <label htmlFor="purchaseIntention" style="padding: 0 20px 0 40px"
+                >顾客意愿：</label
+              >
+              <input
+                class="input-field"
+                pInputText
+                id="purchaseIntention"
+                formControlName="purchaseIntention"
+                placeholder="请输入顾客意愿："
+                style="margin: 0 auto"
+              />
+              <br />
+            </div>
+
+            <div class="input-container">
+              <label htmlFor="address" class="input-label" style="padding: 28px"
+                >城市：</label
+              >
+              <input
+                class="input-field"
+                pInputText
+                id="address"
+                formControlName="address"
+                placeholder="请输入城市："
+                style="margin: 0 auto"
+              />
+
+              <label htmlFor="region" style="padding: 0 28px 0 65px"
+                >地区：</label
+              >
+              <input
+                class="input-field"
+                pInputText
+                id="region"
+                formControlName="region"
+                placeholder="请输入地区："
+                style="margin: 0 auto"
+              />
+              <label htmlFor="phoneNumber" style="padding: 0 20px 0 40px"
+                >电话号码：</label
+              >
+              <input
+                class="input-field"
+                pInputText
+                id="phoneNumber"
+                formControlName="phoneNumber"
+                placeholder="请输入电话号码："
+                style="margin: 0 auto"
+              />
+              <br />
+            </div>
+
+            <div class="input-container">
+              <label
+                htmlFor="duty"
+                class="input-label"
+                style="padding: 0 25px 0 0"
+                >顾客职位：</label
+              >
+              <input
+                class="input-field"
+                pInputText
+                id="duty"
+                formControlName="duty"
+                placeholder="请输入顾客职位："
+                style="margin: 0 auto"
+              />
+              <label htmlFor="createTime" style="padding: 0 20px 0 40px"
+                >注册时间：</label
+              >
+              <input
+                class="input-field"
+                aria-describedby="time-help"
+                pInputText
+                id="createTime"
+                formControlName="createTime"
+                placeholder="请输入注册时间："
+                style="margin: 0 auto"
+                required
+              />
+              <div
+                *ngIf="
+                  createTimeFormControl.invalid &&
+                  (createTimeFormControl.dirty || createTimeFormControl.touched)
+                "
+                class="invalid-feedback"
+              >
+                <!-- 判断当前输入框是否被触碰 -->
+                <small
+                  id="time-help"
+                  class="p-error"
+                  *ngIf="createTimeFormControl.errors?.['pattern']"
+                  >*输入的时间必须是01~12的月份</small
+                >
+              </div>
+
+              <br />
+            </div>
+
+            <div class="button1">
+              <p-button
+                label="检索"
+                styleClass="p-button-outlined p-button-info"
+                (onClick)="LikeSeach()"
+                ><i class="pi pi-search" style="color: rgb(59, 130, 246)"
+                  >&nbsp;</i
+                ></p-button
+              >
+            </div>
+
+            <div class="button2">
+              <p-button
+                label="添加"
+                styleClass="p-button-outlined p-button-info"
+                (onClick)="showAddCustomer()"
+                [ngStyle]="{ 'margin-left': '120px' }"
+                ><i class="pi pi-upload" style="color: rgb(59, 130, 246)"
+                  >&nbsp;</i
+                ></p-button
+              >
+            </div>
+            <div class="button3">
+              <p-button
+                label="清除"
+                styleClass="p-button-outlined p-button-info"
+                (onClick)="remove()"
+                ><i class="pi pi-trash" style="color: rgb(59, 130, 246)"
+                  >&nbsp;</i
+                ></p-button
+              >
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div id="centerZone4" *ngIf="result">
+      <div class="resultIsNull" *ngIf="result.length == 0">
+        <p>没有检测到数据</p>
+      </div>
+
+      <div class="table-wrapper">
+        <div class="table-header">
+          <p-table
+            class="p-datatable p-datatable-sm"
+            [value]="result"
+            [tableStyle]="{ 'min-width': '50rem' ,}"
+            [paginator]="false"
+            (onPageChange)="onPageChange($event)"
+            [first]="first"
+            [rows]="rows"
+            [totalRecords]="totalRecords"
+            [rowsPerPageOptions]="[8, 16, 24]"
+            rowGroupMode="subheader"
+            groupRowsBy="address"
+            class="p-table-header"
+            *ngIf="result.length != 0"
+          >
+            <ng-template pTemplate="header">
+              <tr>
+                <th>顾客ID</th>
+                <th>顾客姓名</th>
+                <th>城市</th>
+                <th>地区</th>
+                <th>性别</th>
+                <th style="padding-right: 10px">电话</th>
+
+                <th style="padding-left: 20px">爱好</th>
+                <th style="padding-right: 17px">意愿</th>
+                <th style="padding-right: 25px">职位</th>
+                <th style="padding-right: 30px">公司名称</th>
+
+                <th colspan="3" style="padding-right: 15px">操作</th>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+
+        <div class="table-body">
+          <p-table
+            class="p-datatable p-datatable-sm"
+            [value]="result"
+            [tableStyle]="{ 'min-width': '50rem' }"
+            [paginator]="true"
+            (onPageChange)="onPageChange($event)"
+            [first]="first"
+            [rows]="rows"
+            [totalRecords]="totalRecords"
+            [rowsPerPageOptions]="[8, 16, 24]"
+            rowGroupMode="subheader"
+            groupRowsBy="address"
+            *ngIf="result.length != 0"
+          >
+            <ng-template pTemplate="groupheader" let-customer>
+              <tr pRowGroupHeader>
+                <td colspan="15" style="text-align: left">
+                  {{ customer.address }}
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="groupfooter" let-customer>
+              <tr>
+                <td colspan="15" style="text-align: left">
+                  {{ customer.address }}顾客数量为：{{
+                    calculateCustomerTotal(customer.address)
+                  }}
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-customer>
+              <tr>
+                <td>{{ customer.customerId }}</td>
+                <td style="padding-left: 115px">{{ customer.customerName }}</td>
+                <td style="padding-left: 120px">{{ customer.address }}</td>
+                <td style="padding-left: 90px">{{ customer.region }}</td>
+                <td *ngIf="customer.gender == 1" style="padding-left: 90px">
+                  男
+                </td>
+                <td *ngIf="customer.gender == 2" style="padding-left: 90px">
+                  女
+                </td>
+                <td style="padding-left: 80px">{{ customer.phoneNumber }}</td>
+
+                <td style="padding-left: 70px">{{ customer.hobby }}</td>
+                <td style="padding-left: 90px">
+                  {{ customer.purchaseIntention }}
+                </td>
+                <td style="padding-left: 60px">{{ customer.duty }}</td>
+                <td style="padding-left: 80px">{{ customer.companyName }}</td>
+
+                <td style="padding-left: 80px">
+                  <div style="display: inline-block">
+                    <p-button
+                      type="submit"
+                      name="ranks"
+                      label="记录"
+                      styleClass="p-button-sm p-button-outlined p-button-info"
+                      (onClick)="showRanksForm(customer)"
+                    ></p-button>
+
+                    <p-button
+                      type="submit"
+                      name="update"
+                      label="修改"
+                      styleClass="p-button-sm p-button-outlined p-button-success"
+                      (onClick)="showUpdateForm(customer)"
+                    ></p-button>
+
+                    <p-button
+                      type="submit"
+                      name="delete"
+                      label="删除"
+                      styleClass="p-button-sm p-button-outlined p-button-danger"
+                      (onClick)="showDeleteDiolog(customer)"
+                    ></p-button>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <div class="serachCustomer"></div>
+
+  <!-- 添加对话框 -->
+  <div class="Adddialog">
+    <p-dialog
+      id="myDialog"
+      header="添加顾客"
+      [(visible)]="AddCustomerDialogIsVisible"
+      [style]="{ width: '900px', height: '680px' }"
+      [modal]="true"
+      [draggable]="false"
+      [resizable]="true"
+      [maximizable]="true"
+    >
+      <form [formGroup]="addCustomeFromGroup">
+        <fieldset>
+          <div style="margin-left: 80px">
+            <div class="add">
+              <label
+                htmlFor="customerName"
+                style="margin-left: 5px; margin: 10px"
+                >顾客姓名：</label
+              >
+              <input
+                class="input-field"
+                pInputText
+                aria-describedby="customerName-help"
+                id="customerName"
+                formControlName="customerName"
+                style="margin-left: 5px; margin: 10px"
+                required
+              />
+              <div
+                *ngIf="
+                  AddcustomerNameFormControl.invalid &&
+                  (AddcustomerNameFormControl.dirty ||
+                    AddcustomerNameFormControl.touched)
+                "
+                class="invalid-feedback"
+              >
+                <!-- 判断当前输入框是否被触碰 -->
+                <small
+                  id="customerName-help"
+                  class="p-error"
+                  *ngIf="AddcustomerNameFormControl.errors?.['required']"
+                  >*姓名不能为空</small
+                >
+              </div>
+              <label htmlFor="gender" style="margin-left: 65px; margin: 10px"
+                >性别：</label
+              >
+
+              <p-radioButton
+                name="gender"
+                value="1"
+                formControlName="gender"
+                inputId="ingredient1"
+                [style]="{ 'margin-left': '25px', 'margin-top': '-50px' }"
+              ></p-radioButton>
+              <label for="gender" style="margin-left: 15px; margin: 10px"
+                >男</label
+              >
+
+              <p-radioButton
+                name="gender"
+                value="2"
+                formControlName="gender"
+                inputId="ingredient1"
+                [style]="{ 'margin-left': '25px', 'margin-top': '-50px' }"
+              ></p-radioButton>
+              <label for="gender" style="margin-left: 15px; margin: 10px"
+                >女</label
+              >
+
+              <br />
+              <div>
+                <label htmlFor="address" style="margin-left: 35px; margin: 10px"
+                  >城市：</label
+                >
+                <input
+                  class="input-field"
+                  aria-describedby="address-help"
+                  pInputText
+                  id="address"
+                  formControlName="address"
+                  style="margin: 10px 10px 10px 40px"
+                  required
+                />
+                <div
+                  *ngIf="
+                    AddaddressFormControl.invalid &&
+                    (AddaddressFormControl.dirty ||
+                      AddaddressFormControl.touched)
+                  "
+                  class="invalid-feedback"
+                >
+                  <!-- 判断当前输入框是否被触碰 -->
+                  <small
+                    id="address-help"
+                    class="p-error"
+                    *ngIf="AddaddressFormControl.errors?.['required']"
+                    >*地址不能为空</small
+                  >
+                </div>
+
+                <label htmlFor="region" style="margin-left: 43px; margin: 10px"
+                  >地区：</label
+                >
+                <input
+                  class="input-field"
+                  aria-describedby="region-help"
+                  pInputText
+                  id="region"
+                  formControlName="region"
+                  style="margin: 10px 10px 10px 40px"
+                  required
+                />
+                <div
+                  *ngIf="
+                    AddregionFormControl.invalid &&
+                    (AddregionFormControl.dirty || AddregionFormControl.touched)
+                  "
+                  class="invalid-feedback"
+                >
+                  <!-- 判断当前输入框是否被触碰 -->
+                  <small
+                    id="region-help"
+                    class="p-error"
+                    *ngIf="AddregionFormControl.errors?.['required']"
+                    >*地区不能为空</small
+                  >
+                </div>
+
+                <br />
+              </div>
+              <label
+                htmlFor="phoneNumber"
+                style="margin-left: 35px; margin: 10px"
+                >电话：</label
+              >
+              <input
+                style="margin: 10px 10px 10px 40px"
+                class="input-field"
+                aria-describedby="phoneNumber-help"
+                pInputText
+                id="phoneNumber"
+                formControlName="phoneNumber"
+                required
+              />
+              <div
+                *ngIf="
+                  AddphoneNumberFormControl.invalid &&
+                  (AddphoneNumberFormControl.dirty ||
+                    AddphoneNumberFormControl.touched)
+                "
+                class="invalid-feedback"
+              >
+                <!-- 判断当前输入框是否被触碰 -->
+                <small
+                  id="phoneNumber-help"
+                  class="p-error"
+                  *ngIf="AddphoneNumberFormControl.errors?.['required']"
+                  >*电话不能为空</small
+                >
+                <small
+                  id="phoneNumber-help"
+                  class="p-error"
+                  *ngIf="AddphoneNumberFormControl.errors?.['pattern']"
+                  >*电话号码必须为11位数字</small
+                >
+              </div>
+              <label htmlFor="customerEmail" style="padding-left: 8px"
+                >顾客邮箱：</label
+              >
+              <input
+                class="input-field"
+                pInputText
+                aria-describedby="customerEmail-help"
+                id="customerEmail"
+                formControlName="customerEmail"
+                style="margin: 10px 10px 10px 20px"
+                required
+              />
+              <div
+                *ngIf="
+                  AddcustomerEmailFormControl.invalid &&
+                  (AddcustomerEmailFormControl.dirty ||
+                    AddcustomerEmailFormControl.touched)
+                "
+                class="invalid-feedback"
+              >
+                <!-- 判断当前输入框是否被触碰 -->
+                <small
+                  id="customerEmail-help"
+                  class="p-error"
+                  *ngIf="AddcustomerEmailFormControl.errors?.['required']"
+                  >*顾客邮箱不能为空</small
+                >
+                <small
+                  id="customerEmail-help"
+                  class="p-error"
+                  *ngIf="AddcustomerEmailFormControl.errors?.['pattern']"
+                  >*请输入有效的电子邮件地址</small
+                >
+              </div>
+              <br />
+
+              <label htmlFor="hobby" style="margin-left: 35px; margin: 10px"
+                >爱好：</label
+              >
+              <input
+                style="margin: 10px 10px 10px 40px"
+                class="input-field"
+                pInputText
+                id="hobby"
+                formControlName="hobby"
+              />
+              <label
+                htmlFor="purchaseIntention"
+                style="margin-left: 23px; margin: 10px"
+                >意向：</label
+              >
+              <p-dropdown
+                [options]="groups"
+                [(ngModel)]="selectedGroup"
+                formControlName="purchaseIntention"
+                optionLabel="label"
+                optionValue="value"
+                [showClear]="true"
+                [style]="{
+                  width: '200px',
+                  'margin-top': '5px',
+                  'margin-left': '27px'
+                }"
+                placeholder="请选择一个意向："
+              >
+                <ng-template pTemplate="selectedItem">
+                  <div *ngIf="selectedGroup">
+                    {{ selectedGroup }}
+                  </div>
+                </ng-template>
+                <ng-template let-group pTemplate="item">
+                  <div>
+                    {{ group.label }}
+                  </div>
+                </ng-template>
+              </p-dropdown>
+              <br />
+              <label
+                htmlFor="companyName"
+                style="margin-left: 3px; margin: 10px"
+                >公司名称：</label
+              >
+              <input
+                class="input-field"
+                style="margin: 10px 10px 10px 8px"
+                aria-describedby="companyName-help"
+                pInputText
+                id="companyName"
+                formControlName="companyName"
+                required
+              />
+              <div
+                *ngIf="
+                  AddcompanyNameFormControl.invalid &&
+                  (AddcompanyNameFormControl.dirty ||
+                    AddcompanyNameFormControl.touched)
+                "
+                class="invalid-feedback"
+              >
+                <!-- 判断当前输入框是否被触碰 -->
+                <small
+                  id="companyName-help"
+                  class="p-error"
+                  *ngIf="AddcompanyNameFormControl.errors?.['required']"
+                  >*名称不能为空</small
+                >
+              </div>
+              <label
+                htmlFor="companyEmail"
+                style="margin-left: 12px; margin: 10px"
+                >公司邮箱：</label
+              >
+              <input
+                class="input-field"
+                style="margin: 10px"
+                aria-describedby="companyEmail-help"
+                pInputText
+                id="companyEmail"
+                formControlName="companyEmail"
+                required
+              />
+              <div
+                *ngIf="
+                  AddcompanyEmailFormControl.invalid &&
+                  (AddcompanyEmailFormControl.dirty ||
+                    AddcompanyEmailFormControl.touched)
+                "
+                class="invalid-feedback"
+              >
+                <!-- 判断当前输入框是否被触碰 -->
+                <small
+                  id="companyEmail-help"
+                  class="p-error"
+                  *ngIf="AddcompanyEmailFormControl.errors?.['required']"
+                  >*公司邮箱不能为空</small
+                >
+                <small
+                  id="customerEmail-help"
+                  class="p-error"
+                  *ngIf="AddcompanyEmailFormControl.errors?.['pattern']"
+                  >*请输入有效的电子邮件地址</small
+                >
+              </div>
+              <br />
+
+              <label htmlFor="duty" style="margin-left: 35px; margin: 10px"
+                >职位：</label
+              >
+              <input
+                class="input-field"
+                style="margin: 10px 10px 10px 40px"
+                aria-describedby="duty-help"
+                pInputText
+                id="duty"
+                formControlName="duty"
+                required
+              />
+              <div
+                *ngIf="
+                  AdddutyFormControl.invalid &&
+                  (AdddutyFormControl.dirty || AdddutyFormControl.touched)
+                "
+                class="invalid-feedback"
+              >
+                <!-- 判断当前输入框是否被触碰 -->
+                <small
+                  id="duty-help"
+                  class="p-error"
+                  *ngIf="AdddutyFormControl.errors?.['required']"
+                  >*职位不能为空</small
+                >
+              </div>
+
+              <label
+                htmlFor="bankAccount"
+                style="margin-left: 12px; margin: 10px"
+                >银行账户：</label
+              >
+              <input
+                style="margin: 10px"
+                class="input-field"
+                aria-describedby="bankAccount-help"
+                pInputText
+                id="bankAccount"
+                formControlName="bankAccount"
+                required
+              />
+
+              <div
+                *ngIf="
+                  AddbankAccountFormControl.invalid &&
+                  (AddbankAccountFormControl.dirty ||
+                    AddbankAccountFormControl.touched)
+                "
+                class="invalid-feedback"
+              >
+                <!-- 判断当前输入框是否被触碰 -->
+                <small
+                  id="bankAccount-help"
+                  class="p-error"
+                  *ngIf="AddbankAccountFormControl.errors?.['required']"
+                  >*银行账户不能为空</small
+                >
+                <!-- luhn算法判断银行账户 或者正则表达式/^[0-9]{10,20}$/-->
+                <small
+                  id="customerEmail-help"
+                  class="p-error"
+                  *ngIf="AddbankAccountFormControl.errors?.['pattern']"
+                  >*请输入正确的银行账户</small
+                >
+              </div>
+
+              <br />
+              <div></div>
+              <p-button
+                [ngStyle]="{ 'margin-right': '200px', 'margin-left': '150px' }"
+                label="添加"
+                styleClass="p-button-outlined"
+                (onClick)="addCustomer()"
+              ></p-button>
+
+              <p-button
+                label="取消"
+                styleClass="p-button-outlined p-button-danger"
+                (onClick)="cancelAddCustomer()"
+              ></p-button>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </p-dialog>
+  </div>
+
+  <!-- 修改对话框 -->
+
+  <div class="updatedialog">
+    <p-dialog
+      id="myDialog"
+      header="修改顾客"
+      [(visible)]="ShowUpdateCustomerForm"
+      [style]="{ width: '900px', height: '680px' }"
+      [modal]="true"
+      [draggable]="false"
+      [resizable]="true"
+      [maximizable]="true"
+    >
+      <form>
+        <fieldset>
+          <div style="margin-left: 80px">
+            <label for="customerName">顾客姓名：</label>
+            <input
+              class="input-field"
+              type="text"
+              pInputText
+              id="customerName"
+              name="customerName"
+              [(ngModel)]="currentCustomer.customerName"
+              required
+              style="margin: 10px 10px 10px 20px"
+            />
+
+            <label for="gender" style="margin-left: 35px">性别：</label>
+            <p-radioButton
+              name="gender"
+              value="1"
+              [(ngModel)]="currentCustomer.gender"
+              inputId="ingredient1"
+              [style]="{ 'margin-left': '30px', 'margin-top': '-50px' }"
+            ></p-radioButton>
+            <label for="ingredient1" style="margin-left: 15px">男</label>
+            <p-radioButton
+              name="gender"
+              value="2"
+              [(ngModel)]="currentCustomer.gender"
+              inputId="ingredient1"
+              [style]="{ 'margin-left': '30px', 'margin-top': '-50px' }"
+            ></p-radioButton>
+            <label for="ingredient1" style="margin-left: 15px">女</label>
+            <br />
+
+            <label for="address" style="margin-left: 35px">地址：</label>
+            <input
+              class="input-field"
+              type="text"
+              pInputText
+              id="address"
+              name="address"
+              [(ngModel)]="currentCustomer.address"
+              required
+              style="margin: 10px 10px 10px 18px"
+            />
+
+            <label for="region" style="margin-left: 35px">地区：</label>
+            <input
+              class="input-field"
+              type="text"
+              pInputText
+              id="region"
+              name="region"
+              [(ngModel)]="currentCustomer.region"
+              required
+              style="margin-left: 15px"
+            />
+
+            <br />
+            <label for="phoneNumber" style="margin-left: 35px">电话：</label>
+            <input
+              class="input-field"
+              type="text"
+              pInputText
+              id="phoneNumber"
+              name="phoneNumber"
+              [(ngModel)]="currentCustomer.phoneNumber"
+              required
+              style="margin: 10px 10px 10px 18px"
+            />
+
+            <label htmlFor="customerEmail" style="margin-left: 17px"
+              >顾客邮箱：</label
+            >
+            <input
+              class="input-field"
+              type="text"
+              pInputText
+              id="customerEmail"
+              name="customerEmail"
+              [(ngModel)]="currentCustomer.customerEmail"
+              required
+            />
+            <br />
+
+            <label htmlFor="bankAccount">银行账户：</label>
+            <input
+              class="input-field"
+              type="text"
+              pInputText
+              id="bankAccount"
+              name="bankAccount"
+              [(ngModel)]="currentCustomer.bankAccount"
+              required
+              style="margin: 10px 10px 10px 20px"
+            />
+            <label htmlFor="duty" style="margin-left: 33px">职位：</label>
+            <input
+              class="input-field"
+              type="text"
+              pInputText
+              id="duty"
+              name="duty"
+              [(ngModel)]="currentCustomer.duty"
+              required
+              style="margin-left: 16px"
+            /><br />
+            <label htmlFor="companyName">公司名称：</label>
+            <input
+              class="input-field"
+              type="text"
+              pInputText
+              id="companyName"
+              name="companyName"
+              [(ngModel)]="currentCustomer.companyName"
+              required
+              style="margin: 10px 10px 10px 20px"
+            />
+            <label htmlFor="companyEmail" style="margin-left: 17px"
+              >公司邮箱：</label
+            >
+            <input
+              class="input-field"
+              type="text"
+              pInputText
+              id="companyEmail"
+              name="companyEmail"
+              [(ngModel)]="currentCustomer.companyEmail"
+              required
+            /><br />
+            <!-- 用下拉列表带入组名 -->
+
+            <div>
+              <label for="hobby" style="margin-left: 35px">爱好：</label>
+              <input
+                class="input-field"
+                type="text"
+                pInputText
+                id="hobby"
+                name="hobby"
+                [(ngModel)]="currentCustomer.hobby"
+                required
+                style="margin: 10px 10px 10px 16px"
+              />
+
+              <label for="purchaseIntention" style="margin-left: 30px"
+                >意向：</label
+              >
+              <p-dropdown
+                [options]="groups"
+                [(ngModel)]="currentCustomer.purchaseIntention"
+                name="purchaseIntention"
+                optionLabel="label"
+                optionValue="value"
+                [showClear]="true"
+                [style]="{
+                  width: '200px',
+                  'margin-top': '10px',
+                  'margin-left': '10px'
+                }"
+                placeholder="请选择一个意向："
+              >
+                <ng-template pTemplate="selectedItem">
+                  <div *ngIf="currentCustomer.purchaseIntention">
+                    {{ currentCustomer.purchaseIntention }}
+                  </div>
+                </ng-template>
+                <ng-template let-group pTemplate="item">
+                  <div>
+                    {{ group.label }}
+                  </div>
+                </ng-template>
+              </p-dropdown>
+            </div>
+          </div>
+          <p-button
+            label="修改"
+            styleClass="p-button-outlined"
+            (onClick)="updateCustomer()"
+            [ngStyle]="{ 'margin-right': '200px', 'margin-left': '200px' }"
+          ></p-button>
+
+          <p-button
+            label="取消"
+            styleClass="p-button-outlined p-button-danger"
+            (onClick)="cancelUpdateForm()"
+          ></p-button>
+        </fieldset>
+      </form>
+    </p-dialog>
+  </div>
+
+  <!-- 排行榜对话框 -->
+  <div class="Ranksdialog">
+    <p-dialog
+      id="myDialog"
+      header="当前顾客购买排行榜"
+      [(visible)]="ShowRanksCustomerForm"
+      [style]="{ width: '900px', height: '700px' }"
+      [modal]="true"
+      [draggable]="false"
+      [resizable]="true"
+      [maximizable]="true"
+    >
+      <div id="rankstable" *ngIf="Ranksresult">
+        <div class="resultIsNull" *ngIf="Ranksresult.length == 0">
+          <p>没有检测到数据</p>
+        </div>
+        <p-table
+          styleClass="ptable"
+          [value]="Ranksresult"
+          [tableStyle]="{ 'min-width': '50rem' }"
+          [paginator]="true"
+          (onPageChange)="RanksOnPageChange($event)"
+          [first]="Ranksfirst"
+          [rows]="Ranksrows"
+          [totalRecords]="RanksTotalRecords"
+          [rowsPerPageOptions]="[10, 15, 20]"
+          *ngIf="Ranksresult.length != 0"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th pSortableColumn="salesId" style="text-align: center">
+                订单ID<p-sortIcon field="salesId"></p-sortIcon>
+              </th>
+              <th style="text-align: center">顾客姓名</th>
+              <th style="text-align: center">打印机名称</th>
+              <th style="text-align: center">单价</th>
+              <th style="text-align: center">购买数量</th>
+              <th style="text-align: center">出货日期</th>
+              <th style="text-align: center">购买总额(元)</th>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-ranks>
+            <tr>
+              <td style="text-align: center">{{ ranks.salesId }}</td>
+              <td style="text-align: center">{{ ranks.customerName }}</td>
+              <td style="text-align: center">{{ ranks.printerName }}</td>
+              <td style="text-align: center">{{ ranks.price }}</td>
+              <td style="text-align: center">{{ ranks.quantity }}</td>
+              <td style="text-align: center">{{ ranks.shippingDate }}</td>
+              <td style="text-align: center">{{ ranks.totalPrice }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </p-dialog>
+  </div>
+
+  <!-- 删除弹窗 -->
+
+  <div class="deletediolog">
+    <p-dialog
+      id="deleteDialog"
+      header="删除顾客"
+      [(visible)]="ShowdeleteCustomerForm"
+      [style]="{ width: '600px', height: '250px' }"
+      [modal]="true"
+      [draggable]="false"
+      [resizable]="true"
+      [maximizable]="true"
+    >
+      <form>
+        <p style="text-align: center; margin-top: 30px; padding-bottom: 30px">
+          确认删除该顾客吗？
+        </p>
+
+        <p-button
+          label="删除"
+          styleClass="p-button-outlined"
+          (onClick)="deleteCustomer()"
+          [ngStyle]="{ 'margin-right': '120px', 'margin-left': '120px' }"
+        ></p-button>
+
+        <p-button
+          label="取消"
+          styleClass="p-button-outlined p-button-danger"
+          (onClick)="cancelDeleteDiolog()"
+        ></p-button>
+      </form>
+    </p-dialog>
+  </div>
+</div>
