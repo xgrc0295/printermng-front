@@ -43,7 +43,7 @@ export class RankComponent implements OnInit{
 
 Ranksresults: any;
 
-RanksTotalRecordss:number= 0;
+
 
 
 
@@ -62,7 +62,7 @@ Ranksrowss: number = 10;
  public showCustomersRanks() {
   this.service.ShowCustomersRanks().subscribe((res) => {
     this.Ranksresults = res;
-    this.RanksTotalRecordss=this.Ranksresult.length;
+
     
   });
 }

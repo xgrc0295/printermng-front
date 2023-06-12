@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { HomeServiceService } from '../home-service.service';
 
 @Component({
   selector: 'app-home',
@@ -15,15 +16,35 @@ export class HomeComponent implements OnInit {
   basicOptions: any;
   data4: any;
   options4: any;
+  labals4: any;
+  labals5: any;
+  Ranksresults: any;
+  Ranksresults1: any;
+  
+  inventoryResult: any;
+  inventoryResult1: any;
+
+  constructor(public service: HomeServiceService )  {}
+
+
   ngOnInit() {
+
+      this.getTimeAndCustomers();
+      this.showCustomersRanks();
+      this.service.getInventory().subscribe((res) => {
+        this.inventoryResult = res;
+        this.inventoryResult1=this.inventoryResult.slice(0,5);
+        this.getprinterNameAndinventory();
+      });
+
     //饼状图
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
     this.data1 = {
-      labels: ['A', 'B', 'C'],
+      labels: this.companyName,
       datasets: [
         {
-          data: [540, 325, 702],
+          data: this.totalPrice,
           backgroundColor: [
             documentStyle.getPropertyValue('--blue-500'),
             documentStyle.getPropertyValue('--yellow-500'),
@@ -115,11 +136,11 @@ export class HomeComponent implements OnInit {
     const surfaceBorder3 = documentStyle3.getPropertyValue('--surface-border');
 
     this.basicData = {
-      labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+      labels: this.printerName,
       datasets: [
         {
           label: '库存量',
-          data: [540, 325, 702, 620],
+          data: this.inventory,
           backgroundColor: [
             'rgba(255, 159, 64, 0.2)',
             'rgba(75, 192, 192, 0.2)',
@@ -174,13 +195,13 @@ export class HomeComponent implements OnInit {
       '--text-color-secondary'
     );
     const surfaceBorder4 = documentStyle4.getPropertyValue('--surface-border');
-
+    
     this.data4 = {
-      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+      labels: this.months,
       datasets: [
         {
           label: '客户数',
-          data: [65, 59, 80, 81, 56, 55, 40],
+          data: this.customerCount,
           fill: false,
           borderColor: documentStyle4.getPropertyValue('--purple-500'),
           tension: 0.4,
@@ -219,5 +240,64 @@ export class HomeComponent implements OnInit {
         },
       },
     };
+  }
+
+  //获取顾客和时间
+  public getTimeAndCustomers(){
+    this.labals4 = { month: "", customerCount: 0 };
+      this.service.getByCreateTime().subscribe((res)=>{
+          this.labals4=res;
+          this.labals5=this.labals4.slice(0,5);
+          
+          this.getMonthAndCustomerCount();
+      })
+  }
+  months: string[] = [];
+  customerCount: number[] = [];
+
+  
+  public getMonthAndCustomerCount() {
+    for (let GetCustomersByTime of this.labals5) {
+      this.months.push(GetCustomersByTime.month)
+      this.customerCount.push(GetCustomersByTime.customerCount);
+    }
+
+
+  }
+
+  public showCustomersRanks() {
+    this.service.ShowCustomersRanks().subscribe((res) => {
+      this.Ranksresults = res;
+      this.Ranksresults1=this.Ranksresults.slice(0,5);
+      this.getcompanyNameAndtotalPrice();
+      
+    });
+  }
+
+  companyName: string[] = [];
+  totalPrice: number[] = [];
+
+  
+  public getcompanyNameAndtotalPrice() {
+   
+    for (let customerAndSales of this.Ranksresults1) {
+      this.companyName.push(customerAndSales.companyName)
+      this.totalPrice.push(customerAndSales.totalPrice);
+    }
+
+  }
+
+  printerName: string[] = [];
+  inventory: number[] = [];
+
+  
+  public getprinterNameAndinventory() {
+   
+    for (let inventory of this.inventoryResult1) {
+      this.printerName.push(inventory.printerName)
+      this.inventory.push(inventory.inventory);
+    }
+    console.log(this.printerName);
+    console.log(this.inventory);
   }
 }
